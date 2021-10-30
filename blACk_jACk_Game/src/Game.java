@@ -77,27 +77,19 @@ public class Game {
         System.out.println("Here?");
         System.out.println(players.get(0).getSocket());
         System.out.println(players.get(1).getSocket());
+        Thread playerPlay = new Thread();
 
 
 
         for (Player player : players) {
-            System.out.println(player.getSocket());
-            int chipsBet;
+            playerPlay = new Thread(new Bet(player));
+            playerPlay.start();
 
-            player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips());
-
-            while (true) {
-                chipsBet = player.getPrompt().getUserInput(player.getScanner());
-
-                if (chipsBet > player.getChips()) {
-                    player.getScanner().setMessage("Not enough chips for this bet, try again");
-                } else {
-                    break;
-                }
-            }
-
-            player.setBet(chipsBet);
-            player.setChips(player.getChips() - chipsBet);
+        }
+        try {
+            playerPlay.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         distributeHands();
