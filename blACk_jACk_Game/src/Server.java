@@ -59,6 +59,7 @@ public class Server {
 
         }
         game.startGame();
+
     }
 
     public void broadcast() {

@@ -1,5 +1,6 @@
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
+import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
 import java.io.*;
@@ -56,4 +57,5 @@ public class Client implements Runnable {
     public PrintStream getPrintStream() {
         return printStream;
     }
+
 }
