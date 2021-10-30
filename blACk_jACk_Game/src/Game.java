@@ -2,6 +2,7 @@ import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
+import java.io.PrintStream;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -207,10 +208,9 @@ public class Game {
 
         for (Player player: players){
             for(Player each: players) {
-                StringInputScanner stringBroadcast = new StringInputScanner();
-                stringBroadcast.setMessage(player.getName() + " hand is: \n");
-                for (Card card : player.getPlayerHand()) {
-                    stringBroadcast.setMessage(card.getCardName() + " of " + card.getSuit());
+                player.getPrintStream().println(each.getName() + " hand is: \n");
+                for (Card card : each.getPlayerHand()) {
+                    player.getPrintStream().println(card.getCardName() + " of " + card.getSuit());
                 }
             }
         }

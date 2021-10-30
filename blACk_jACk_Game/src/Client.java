@@ -52,4 +52,8 @@ public class Client implements Runnable {
     public IntegerInputScanner getScanner() {
         return scanner;
     }
+
+    public PrintStream getPrintStream() {
+        return printStream;
+    }
 }
