@@ -79,8 +79,6 @@ public class Game {
         System.out.println(players.get(1).getSocket());
         Thread playerPlay = new Thread();
 
-
-
         for (Player player : players) {
             playerPlay = new Thread(new Bet(player));
             playerPlay.start();
@@ -95,9 +93,7 @@ public class Game {
         distributeHands();
         //need to broadcast hands
         showInitialHands();
-
-
-
+        
     }
 
     public LinkedHashMap<Integer, Card> getAllCards() {
