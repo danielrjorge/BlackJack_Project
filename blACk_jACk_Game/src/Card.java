@@ -17,4 +17,8 @@ public class Card {
     public CardNames getCardName() {
         return cardName;
     }
+
+    public int getCardPoints() {
+        return cardPoints;
+    }
 }

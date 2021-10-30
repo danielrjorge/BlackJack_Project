@@ -9,13 +9,13 @@ public class Bet implements Runnable{
         System.out.println(player.getSocket());
         int chipsBet;
 
-        player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips());
+        player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips() + "\n");
 
         while (true) {
             chipsBet = player.getPrompt().getUserInput(player.getScanner());
 
             if (chipsBet > player.getChips()) {
-                player.getScanner().setMessage("Not enough chips for this bet, try again");
+                player.getScanner().setMessage("Not enough chips for this bet, try again \n");
             } else {
                 break;
             }
