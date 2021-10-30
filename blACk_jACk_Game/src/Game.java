@@ -8,28 +8,26 @@ public class Game {
 
     private LinkedList<Card> dealerHand;
 
-    private LinkedHashMap<Integer,Card> fullDeck, gameDeck;
+    private LinkedHashMap<Integer, Card> fullDeck, gameDeck;
     private LinkedList<Player> players;
     private int counter = 52;
-    private Prompt prompt;
 
-    public Game(LinkedList<Player> players, Prompt prompt){
+    public Game(LinkedList<Player> players) {
 
         this.fullDeck = getAllCards();
         this.gameDeck = fullDeck;
         this.dealerHand = new LinkedList<>();
         this.players = players;
-        this.prompt = prompt;
 
     }
 
-    public void startGame(){
+    public void startGame() {
 
         startRound();
 
     }
 
-    public void distributeHands(){
+    public void distributeHands() {
 
         System.out.println("Dealer hand:");
 
@@ -38,7 +36,7 @@ public class Game {
             Integer[] remaining = new Integer[gameDeck.size()];
             gameDeck.keySet().toArray(remaining);
 
-            int cardForDealer = remaining[Randomizer.getNumber(remaining.length)-1];
+            int cardForDealer = remaining[Randomizer.getNumber(remaining.length) - 1];
 
             Card currentCard = gameDeck.get(cardForDealer);
             gameDeck.remove(cardForDealer);
@@ -47,7 +45,7 @@ public class Game {
             System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
         }
 
-        for(Player player: players){
+        for (Player player : players) {
 
             System.out.println("player hand:");
 
@@ -56,7 +54,7 @@ public class Game {
                 Integer[] remaining = new Integer[gameDeck.size()];
                 gameDeck.keySet().toArray(remaining);
 
-                int cardForPlayer = remaining[Randomizer.getNumber(remaining.length)-1];
+                int cardForPlayer = remaining[Randomizer.getNumber(remaining.length) - 1];
 
                 Card currentCard = gameDeck.get(cardForPlayer);
                 gameDeck.remove(cardForPlayer);
@@ -68,35 +66,35 @@ public class Game {
 
     }
 
-    public void startRound(){
+    public void startRound() {
+        System.out.println("Here?");
 
-        for(Player player: players){
+        for (Player player : players) {
             int chipsBet;
-            IntegerInputScanner scanner = new IntegerInputScanner();
-            scanner.setMessage("Place your bet - Total chips available -> " + player.getChips());
 
-            while(true) {
-                chipsBet = prompt.getUserInput(scanner);
+            player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips());
 
-                if(chipsBet > player.getChips()){
-                    scanner.setMessage("Not enough chips for this bet, try again");
+            while (true) {
+                chipsBet = player.getPrompt().getUserInput(player.getScanner());
+
+                if (chipsBet > player.getChips()) {
+                    player.getScanner().setMessage("Not enough chips for this bet, try again");
                 } else {
                     break;
                 }
             }
 
             player.setBet(chipsBet);
-            player.setChips(player.getChips()-chipsBet);
+            player.setChips(player.getChips() - chipsBet);
         }
 
         distributeHands();
         //need to broadcast hands
 
 
-
     }
 
-    public LinkedHashMap<Integer, Card> getAllCards(){
+    public LinkedHashMap<Integer, Card> getAllCards() {
 
         String suit;
         fullDeck = new LinkedHashMap<>();
@@ -104,7 +102,7 @@ public class Game {
         int counter = 1;
 
         for (int i = 0; i < 4; i++) {
-            switch (i){
+            switch (i) {
                 case 0:
                     suit = "spades";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
@@ -184,8 +182,12 @@ public class Game {
 
     }
 
-    public void addToDealerHand(Card card){
+    public void addToDealerHand(Card card) {
         dealerHand.add(card);
+    }
+
+    public void setPlayers(LinkedList<Player> players) {
+        this.players = players;
     }
 
 }

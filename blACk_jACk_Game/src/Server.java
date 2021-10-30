@@ -36,7 +36,7 @@ public class Server {
     }
 
     public void listen() {
-        game = new Game(list, prompt);
+        game = new Game(list);
         list = new LinkedList<>();
         while (true) {
             // block waiting for a client to connect
@@ -54,8 +54,8 @@ public class Server {
 
             Player clientConnection = new Player(clientSocket, this);
             list.add(clientConnection);
+            game.setPlayers(list);
             multipleClients.submit(clientConnection);
-            game.startGame();
 
 
         }

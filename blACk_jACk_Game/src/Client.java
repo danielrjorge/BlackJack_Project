@@ -1,4 +1,5 @@
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
 import java.io.*;
@@ -11,10 +12,10 @@ public class Client implements Runnable {
     private PrintStream printStream;
     private String name;
     private Server server;
-
+    private IntegerInputScanner scanner;
 
     public Client(Socket socket, Server server) {
-
+        this.scanner = new IntegerInputScanner();
         this.socket = socket;
         this.server = server;
 
@@ -45,5 +46,13 @@ public class Client implements Runnable {
 
     public Socket getSocket() {
         return socket;
+    }
+
+    public Prompt getPrompt() {
+        return prompt;
+    }
+
+    public IntegerInputScanner getScanner() {
+        return scanner;
     }
 }

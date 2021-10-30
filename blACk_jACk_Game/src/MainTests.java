@@ -14,7 +14,7 @@ public class MainTests {
         players.add(player2);
         players.add(player3);
 
-        Game game = new Game(players, prompt);
+        Game game = new Game(players);
 
         game.distributeHands();
 
