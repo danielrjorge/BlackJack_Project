@@ -9,7 +9,6 @@ public class Server {
 
     public static final int port = 42069;
     private Prompt prompt;
-    private PrintStream printStream;
     private Socket clientSocket;
     private ServerSocket serverSocket;
     private LinkedList<Client> list;
@@ -33,7 +32,7 @@ public class Server {
             System.out.println("Waiting for a client connection");
             try {
                 clientSocket = serverSocket.accept();
-                System.out.println("New client connection, socket: " + clientSocket.getInetAddress());
+                System.out.println("New client connection, socket: " + clientSocket.getPort());
 
             } catch (IOException e) {
                 e.printStackTrace();
