@@ -17,7 +17,7 @@ public class Player extends Client {
 
     //for real
     public Player(Socket socket, Server server) {
-        super(socket, new Server());
+        super(socket, server);
         playerHand = new LinkedList<>();
         this.chips = 500;
     }

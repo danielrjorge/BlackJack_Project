@@ -33,12 +33,14 @@ public class Client implements Runnable {
         this.name = prompt.getUserInput(question1);
         question1.setMessage("\nHello " + this.name + "\n");
         question1.show(printStream);
-        server.broadcast();
+        server.getGame().startRound();
+
+
 
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Socket getSocket() {

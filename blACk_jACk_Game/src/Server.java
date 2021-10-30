@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
@@ -15,23 +18,26 @@ public class Server {
     private Prompt prompt;
     private Socket clientSocket;
     private ServerSocket serverSocket;
-    private List<Client> list;
+    private LinkedList<Player> list;
     private PrintStream printStream;
+    private Game game;
+    private ExecutorService multipleClients;
 
     public Server() {
-
         System.out.println("Binding to port " + port);
 
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("Server started: " + serverSocket);
+            this.multipleClients = Executors.newCachedThreadPool();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void listen() {
-        list = Collections.synchronizedList(new LinkedList<>());
+        game = new Game(list, prompt);
+        list = new LinkedList<>();
         while (true) {
             // block waiting for a client to connect
             System.out.println("Waiting for a client connection");
@@ -45,12 +51,11 @@ public class Server {
                 e.printStackTrace();
             }
 
-            list.add(new Client(clientSocket, this));
 
-            Client clientConnection = new Client(clientSocket, this);
-
-            Thread clientThread = new Thread(clientConnection);
-            clientThread.start();
+            Player clientConnection = new Player(clientSocket, this);
+            list.add(clientConnection);
+            multipleClients.submit(clientConnection);
+            game.startGame();
 
 
         }
@@ -59,12 +64,15 @@ public class Server {
 
     public void broadcast() {
 
-        for (Client test : list) {
+        for (int i = 0; i < list.size(); i++) {
             StringInputScanner stringBroadcast = new StringInputScanner();
-            stringBroadcast.setMessage(test.getName() + " joined the lobby!");
+            stringBroadcast.setMessage(list.get(i).getName() + " joined the lobby!");
             stringBroadcast.show(printStream);
+            System.out.println(Thread.currentThread().getName());
         }
     }
 
-
+    public Game getGame() {
+        return game;
+    }
 }
