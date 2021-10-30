@@ -8,11 +8,12 @@ public class Player extends Client {
 
     //for tests
     public Player(){
+        super(new Socket(), new Server());
         playerHand = new LinkedList<>();
     }
 
-    public Player(Socket socket) {
-        super(socket);
+    public Player(Socket socket, Server server) {
+        super(socket, new Server());
         playerHand = new LinkedList<>();
     }
 
