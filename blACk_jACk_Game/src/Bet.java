@@ -4,6 +4,10 @@ public class Bet implements Runnable{
         this.player = player;
     }
 
+    public Bet() {
+
+    }
+
     @Override
     public void run() {
         System.out.println(player.getSocket());

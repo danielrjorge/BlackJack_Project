@@ -24,8 +24,8 @@ public class Game {
     }
 
     public void startGame() {
-        for (Player player: players) {
-            while (player.getName() == null){
+        for (Player player : players) {
+            while (player.getName() == null) {
 
             }
 
@@ -74,26 +74,29 @@ public class Game {
     }
 
     public void startRound() {
-        System.out.println("Here?");
-        System.out.println(players.get(0).getSocket());
-        System.out.println(players.get(1).getSocket());
-        Thread playerPlay = new Thread();
 
-        for (Player player : players) {
-            playerPlay = new Thread(new Bet(player));
-            playerPlay.start();
+        LinkedList<Thread> threadList = new LinkedList<>();
+
+        for (int i = 0; i < players.size(); i++) {
+
+            threadList.add(new Thread(new Bet(players.get(i))));
+            threadList.get(i).start();
 
         }
-        try {
-            playerPlay.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        for (Thread thread : threadList) {
+            try {
+                thread.join();
+                threadList.remove(thread);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
 
         distributeHands();
         //need to broadcast hands
         showInitialHands();
-        
+
     }
 
     public LinkedHashMap<Integer, Card> getAllCards() {
@@ -192,10 +195,10 @@ public class Game {
         this.players = players;
     }
 
-    public void showInitialHands(){
+    public void showInitialHands() {
 
-        for (Player player: players){
-            for(Player each: players) {
+        for (Player player : players) {
+            for (Player each : players) {
                 player.getPrintStream().println(each.getName() + " hand is: \n");
                 for (Card card : each.getPlayerHand()) {
                     player.getPrintStream().println(card.getCardName() + " of " + card.getSuit());
