@@ -1,5 +1,6 @@
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
+import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -90,6 +91,8 @@ public class Game {
 
         distributeHands();
         //need to broadcast hands
+        showInitialHands();
+
 
 
     }
@@ -104,7 +107,7 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 0:
-                    suit = "spades";
+                    suit = "SPADES";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -121,7 +124,7 @@ public class Game {
                     break;
 
                 case 1:
-                    suit = "clubs";
+                    suit = "CLUBS";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -138,7 +141,7 @@ public class Game {
                     break;
 
                 case 2:
-                    suit = "hearts";
+                    suit = "HEARTS";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -155,7 +158,7 @@ public class Game {
                     break;
 
                 case 3:
-                    suit = "diamonds";
+                    suit = "DIAMONDS";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -188,6 +191,19 @@ public class Game {
 
     public void setPlayers(LinkedList<Player> players) {
         this.players = players;
+    }
+
+    public void showInitialHands(){
+
+        for (Player player: players){
+            for(Player each: players) {
+                StringInputScanner stringBroadcast = new StringInputScanner();
+                stringBroadcast.setMessage(player.getName() + " hand is: \n");
+                for (Card card : player.getPlayerHand()) {
+                    stringBroadcast.setMessage(card.getCardName() + " of " + card.getSuit());
+                }
+            }
+        }
     }
 
 }

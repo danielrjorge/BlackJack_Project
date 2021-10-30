@@ -34,9 +34,6 @@ public class Client implements Runnable {
         this.name = prompt.getUserInput(question1);
         question1.setMessage("\nHello " + this.name + "\n");
         question1.show(printStream);
-        server.getGame().startRound();
-
-
 
     }
 
