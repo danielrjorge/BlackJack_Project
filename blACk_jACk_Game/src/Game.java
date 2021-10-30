@@ -62,20 +62,38 @@ public class Game {
             threadList.get(i).start();
 
         }
-        for (Thread thread : threadList) {
+        for (int i = 0; i < threadList.size(); i++) {
             try {
-                thread.join();
-                threadList.remove(thread);
+                threadList.get(i).join();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
 
 
+        while (threadList.size() != 0){
+            threadList.remove(0);
+        }
         distributeHands();
         //need to broadcast hands
         showHands();
 
+        for (int i = 0; i < players.size(); i++) {
+            threadList.add(new Thread(new PlayHand(players.get(i),this)));
+            threadList.get(i).start();
+        }
+
+
+
+        for (Thread thread: threadList) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -176,9 +194,9 @@ public class Game {
     }
 
 
-    public void showHands(){
-        for (Player player: players){
-            for(Player each: players) {
+    public void showHands() {
+        for (Player player : players) {
+            for (Player each : players) {
                 player.getPrintStream().println("\n" + each.getName() + " hand is:");
                 for (Card card : each.getPlayerHand()) {
                     player.getPrintStream().println(card.getCardName() + " of " + card.getSuit());
@@ -187,24 +205,23 @@ public class Game {
         }
     }
 
-    public void hit(Player player){
+    public void hit(Player player) {
         addCardAndRemoveFromDeck(player);
     }
 
-    public void hitDealer(){
+    public void hitDealer() {
         addCardAndRemoveFromDeckDealer();
     }
 
-    public boolean isBust(Player player){
-        if(player.getPoints() > MAXPOINTS){
+    public boolean isBust(Player player) {
+        if (player.getPoints() > MAXPOINTS) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public void addCardAndRemoveFromDeck(Player player){
+    public void addCardAndRemoveFromDeck(Player player) {
 
         Integer[] remaining = new Integer[gameDeck.size()];
         gameDeck.keySet().toArray(remaining);
@@ -218,7 +235,7 @@ public class Game {
         System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
     }
 
-    public void addCardAndRemoveFromDeckDealer(){
+    public void addCardAndRemoveFromDeckDealer() {
 
         Integer[] remaining = new Integer[gameDeck.size()];
         gameDeck.keySet().toArray(remaining);
