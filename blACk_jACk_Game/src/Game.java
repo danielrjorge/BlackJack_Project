@@ -195,6 +195,11 @@ public class Game {
         addCardAndRemoveFromDeckDealer();
     }
 
+    public  void stay(Player player){
+        player.getPrintStream().print(player.getName() + " has stayed");
+        
+    }
+
     public boolean isBust(Player player){
         if(player.getPoints() > MAXPOINTS){
             return true;

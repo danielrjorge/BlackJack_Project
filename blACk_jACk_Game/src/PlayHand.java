@@ -18,19 +18,21 @@ public class PlayHand implements Runnable {
         displayMenu();
         int choice = chooseOption(menu);
         switch (choice) {
-            case 1 :
+            case 1:
                 game.hit(player);
                 break;
-            //case menu 2:
-            //game.stay;
-            default: break;
+            case 2:
+                game.stay(player);
+            default:
+                break;
         }
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
         menu.setMessage("Choose your play");
     }
-    public int chooseOption(MenuInputScanner menu){
+
+    public int chooseOption(MenuInputScanner menu) {
         int choose = player.getPrompt().getUserInput(menu);
         System.out.println("User wants to " + options[choose - 1]);
         return choose;
