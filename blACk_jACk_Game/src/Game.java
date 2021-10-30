@@ -1,3 +1,6 @@
+import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -8,19 +11,21 @@ public class Game {
     private LinkedHashMap<Integer,Card> fullDeck, gameDeck;
     private LinkedList<Player> players;
     private int counter = 52;
+    private Prompt prompt;
 
-    public Game(LinkedList<Player> players){
+    public Game(LinkedList<Player> players, Prompt prompt){
 
         this.fullDeck = getAllCards();
         this.gameDeck = fullDeck;
         this.dealerHand = new LinkedList<>();
         this.players = players;
+        this.prompt = prompt;
 
     }
 
     public void startGame(){
 
-        startRound(players);
+        startRound();
 
     }
 
@@ -63,11 +68,31 @@ public class Game {
 
     }
 
-    public void startRound(LinkedList<Player> players){
+    public void startRound(){
 
         for(Player player: players){
+            int chipsBet;
+            IntegerInputScanner scanner = new IntegerInputScanner();
+            scanner.setMessage("Place your bet - Total chips available -> " + player.getChips());
 
+            while(true) {
+                chipsBet = prompt.getUserInput(scanner);
+
+                if(chipsBet > player.getChips()){
+                    scanner.setMessage("Not enough chips for this bet, try again");
+                } else {
+                    break;
+                }
+            }
+
+            player.setBet(chipsBet);
+            player.setChips(player.getChips()-chipsBet);
         }
+
+        distributeHands();
+        //need to broadcast hands
+
+
 
     }
 
