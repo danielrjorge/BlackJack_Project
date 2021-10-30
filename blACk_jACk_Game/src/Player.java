@@ -3,7 +3,13 @@ import java.util.LinkedList;
 
 public class Player extends Client {
 
-    LinkedList<Card> playerHand;
+    private LinkedList<Card> playerHand;
+    private String name;
+
+    //for tests
+    public Player(){
+        playerHand = new LinkedList<>();
+    }
 
     public Player(Socket socket) {
         super(socket);

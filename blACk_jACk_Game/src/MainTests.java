@@ -4,7 +4,7 @@ import java.util.LinkedList;
 public class MainTests {
 
     public static void main(String[] args) {
-        Player player1 = new Player(new Socket()), player2 = new Player(new Socket()), player3 = new Player(new Socket());
+        Player player1 = new Player(), player2 = new Player(), player3 = new Player();
 
         LinkedList<Player> players = new LinkedList<>();
         players.add(player1);
@@ -15,6 +15,5 @@ public class MainTests {
 
         game.distributeHands();
 
-        game.startGame();
     }
 }

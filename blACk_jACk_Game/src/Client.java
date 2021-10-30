@@ -12,6 +12,10 @@ public class Client implements Runnable {
     private Prompt prompt;
     private PrintStream printStream;
 
+    public Client(){
+
+    }
+
     public Client(Socket socket) {
         this.socket = socket;
         try {

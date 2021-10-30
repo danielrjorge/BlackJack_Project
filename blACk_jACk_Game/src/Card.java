@@ -9,4 +9,12 @@ public class Card {
         this.suit = suit;
         this.cardPoints = card.getPoints();
     }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    public CardNames getCardName() {
+        return cardName;
+    }
 }
