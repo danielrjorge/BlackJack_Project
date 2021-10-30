@@ -22,7 +22,12 @@ public class Game {
     }
 
     public void startGame() {
+        for (Player player: players) {
+            while (player.getName() == null){
 
+            }
+
+        }
         startRound();
 
     }
@@ -68,8 +73,13 @@ public class Game {
 
     public void startRound() {
         System.out.println("Here?");
+        System.out.println(players.get(0).getSocket());
+        System.out.println(players.get(1).getSocket());
+
+
 
         for (Player player : players) {
+            System.out.println(player.getSocket());
             int chipsBet;
 
             player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips());
