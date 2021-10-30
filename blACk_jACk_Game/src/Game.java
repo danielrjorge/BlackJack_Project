@@ -116,6 +116,8 @@ public class Game {
     public static void main(String[] args) {
 
         Game game = new Game();
+        Server server = new Server();
+        server.listen();
 
         game = null;
 
