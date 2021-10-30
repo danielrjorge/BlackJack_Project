@@ -7,6 +7,7 @@ public class Player extends Client {
     private String name;
     private int chips;
     private int bet;
+    private int points = 0;
 
     //for tests
     public Player(){
@@ -49,5 +50,13 @@ public class Player extends Client {
 
     public int getBet() {
         return bet;
+    }
+
+    public void sumPoints(int points) {
+        this.points += points;
+    }
+
+    public int getPoints() {
+        return points;
     }
 }

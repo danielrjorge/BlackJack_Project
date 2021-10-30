@@ -1,8 +1,3 @@
-import org.academiadecodigo.bootcamp.Prompt;
-import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
-import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
-
-import java.io.PrintStream;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -13,11 +8,13 @@ public class Game {
     private LinkedHashMap<Integer, Card> fullDeck, gameDeck;
     private LinkedList<Player> players;
     private int counter = 52;
+    private final int MAXPOINTS = 21;
+    private int dealerPoints = 0;
 
     public Game(LinkedList<Player> players) {
 
         this.fullDeck = getAllCards();
-        this.gameDeck = fullDeck;
+        this.gameDeck = getAllCards();
         this.dealerHand = new LinkedList<>();
         this.players = players;
 
@@ -40,16 +37,7 @@ public class Game {
 
         for (int i = 0; i < 2; i++) {
 
-            Integer[] remaining = new Integer[gameDeck.size()];
-            gameDeck.keySet().toArray(remaining);
-
-            int cardForDealer = remaining[Randomizer.getNumber(remaining.length) - 1];
-
-            Card currentCard = gameDeck.get(cardForDealer);
-            gameDeck.remove(cardForDealer);
-
-            addToDealerHand(currentCard);
-            System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
+            addCardAndRemoveFromDeckDealer();
         }
 
         for (Player player : players) {
@@ -57,16 +45,7 @@ public class Game {
             System.out.println("player hand:");
 
             for (int i = 0; i < 2; i++) {
-
-                Integer[] remaining = new Integer[gameDeck.size()];
-                gameDeck.keySet().toArray(remaining);
-
-                int cardForPlayer = remaining[Randomizer.getNumber(remaining.length) - 1];
-
-                Card currentCard = gameDeck.get(cardForPlayer);
-                gameDeck.remove(cardForPlayer);
-                player.addToHand(currentCard);
-                System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
+                addCardAndRemoveFromDeck(player);
             }
 
         }
@@ -74,7 +53,7 @@ public class Game {
     }
 
     public void startRound() {
-
+        Thread playerPlay = new Thread();
         LinkedList<Thread> threadList = new LinkedList<>();
 
         for (int i = 0; i < players.size(); i++) {
@@ -95,7 +74,8 @@ public class Game {
 
         distributeHands();
         //need to broadcast hands
-        showInitialHands();
+        showHands();
+
 
     }
 
@@ -195,16 +175,61 @@ public class Game {
         this.players = players;
     }
 
-    public void showInitialHands() {
 
-        for (Player player : players) {
-            for (Player each : players) {
-                player.getPrintStream().println(each.getName() + " hand is: \n");
+    public void showHands(){
+        for (Player player: players){
+            for(Player each: players) {
+                player.getPrintStream().println("\n" + each.getName() + " hand is:");
                 for (Card card : each.getPlayerHand()) {
                     player.getPrintStream().println(card.getCardName() + " of " + card.getSuit());
                 }
             }
         }
+    }
+
+    public void hit(Player player){
+        addCardAndRemoveFromDeck(player);
+    }
+
+    public void hitDealer(){
+        addCardAndRemoveFromDeckDealer();
+    }
+
+    public boolean isBust(Player player){
+        if(player.getPoints() > MAXPOINTS){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void addCardAndRemoveFromDeck(Player player){
+
+        Integer[] remaining = new Integer[gameDeck.size()];
+        gameDeck.keySet().toArray(remaining);
+
+        int remainingCards = remaining[Randomizer.getNumber(remaining.length) - 1];
+
+        Card currentCard = gameDeck.get(remainingCards);
+        player.sumPoints(currentCard.getCardPoints());
+        gameDeck.remove(remainingCards);
+        player.addToHand(currentCard);
+        System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
+    }
+
+    public void addCardAndRemoveFromDeckDealer(){
+
+        Integer[] remaining = new Integer[gameDeck.size()];
+        gameDeck.keySet().toArray(remaining);
+
+        int remainingCards = remaining[Randomizer.getNumber(remaining.length) - 1];
+
+        Card currentCard = gameDeck.get(remainingCards);
+        gameDeck.remove(remainingCards);
+        dealerPoints += currentCard.getCardPoints();
+        addToDealerHand(currentCard);
+        System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
     }
 
 }
