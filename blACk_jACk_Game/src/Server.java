@@ -57,12 +57,8 @@ public class Server {
             game.setPlayers(list);
             multipleClients.submit(clientConnection);
 
-
         }
-
-
         game.startGame();
-
     }
 
     public void broadcast() {
