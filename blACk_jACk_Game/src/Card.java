@@ -7,5 +7,6 @@ public class Card {
     public Card(CardNames card, String suit){
         this.cardName = card;
         this.suit = suit;
+        this.cardPoints = card.getPoints();
     }
 }
