@@ -3,17 +3,50 @@ import java.util.LinkedList;
 
 public class Game {
 
-    private LinkedList dealerHand;
+    private LinkedList<Card> dealerHand;
 
-    private LinkedHashMap<Card,Integer> deck;
+    private LinkedHashMap<Integer,Card> fullDeck, gameDeck;
+    private LinkedList<Player> players;
+    private int counter = 52;
 
-    public Game(){
+    public Game(LinkedList<Player> players){
 
-        deck = getAllCards();
+        this.fullDeck = getAllCards();
+        this.gameDeck = fullDeck;
+        this.dealerHand = new LinkedList<>();
+        this.players = players;
 
     }
 
-    public void startGame(LinkedList<Player> players){
+    public void startGame(){
+
+        startRound(players);
+
+    }
+
+    public void distributeHands(){
+
+        for (int i = 0; i < 2; i++) {
+            int cardForDealer = Randomizer.getNumber(counter);
+            Card currentCard = gameDeck.get(cardForDealer);
+            gameDeck.remove(cardForDealer);
+            addToDealerHand(currentCard);
+        }
+
+        for(Player player: players){
+
+            for (int i = 0; i < 2; i++) {
+                int cardForPlayer = Randomizer.getNumber(counter);
+                Card currentCard = gameDeck.get(cardForPlayer);
+                gameDeck.remove(cardForPlayer);
+                player.addToHand(currentCard);
+            }
+
+        }
+
+    }
+
+    public void startRound(LinkedList<Player> players){
 
         for(Player player: players){
 
@@ -21,14 +54,10 @@ public class Game {
 
     }
 
-    public void startRound(){
-
-    }
-
-    public LinkedHashMap<Card, Integer> getAllCards(){
+    public LinkedHashMap<Integer, Card> getAllCards(){
 
         String suit;
-        deck = new LinkedHashMap<>();
+        fullDeck = new LinkedHashMap<>();
 
         int counter = 1;
 
@@ -36,70 +65,70 @@ public class Game {
             switch (i){
                 case 0:
                     suit = "spades";
-                    deck.put(new Card(CardNames.ACE, suit),counter++);
-                    deck.put(new Card(CardNames.KING, suit),counter++);
-                    deck.put(new Card(CardNames.QUEEN, suit),counter++);
-                    deck.put(new Card(CardNames.JACK, suit),counter++);
-                    deck.put(new Card(CardNames.TEN, suit),counter++);
-                    deck.put(new Card(CardNames.NINE, suit),counter++);
-                    deck.put(new Card(CardNames.EIGHT, suit),counter++);
-                    deck.put(new Card(CardNames.SEVEN, suit),counter++);
-                    deck.put(new Card(CardNames.SIX, suit),counter++);
-                    deck.put(new Card(CardNames.FIVE, suit),counter++);
-                    deck.put(new Card(CardNames.FOUR, suit),counter++);
-                    deck.put(new Card(CardNames.THREE, suit),counter++);
-                    deck.put(new Card(CardNames.TWO, suit),counter++);
+                    fullDeck.put(counter++, new Card(CardNames.ACE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.KING, suit));
+                    fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.JACK, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.NINE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.EIGHT, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SEVEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SIX, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FIVE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FOUR, suit));
+                    fullDeck.put(counter++, new Card(CardNames.THREE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TWO, suit));
                     break;
 
                 case 1:
                     suit = "clubs";
-                    deck.put(new Card(CardNames.ACE, suit),counter++);
-                    deck.put(new Card(CardNames.KING, suit),counter++);
-                    deck.put(new Card(CardNames.QUEEN, suit),counter++);
-                    deck.put(new Card(CardNames.JACK, suit),counter++);
-                    deck.put(new Card(CardNames.TEN, suit),counter++);
-                    deck.put(new Card(CardNames.NINE, suit),counter++);
-                    deck.put(new Card(CardNames.EIGHT, suit),counter++);
-                    deck.put(new Card(CardNames.SEVEN, suit),counter++);
-                    deck.put(new Card(CardNames.SIX, suit),counter++);
-                    deck.put(new Card(CardNames.FIVE, suit),counter++);
-                    deck.put(new Card(CardNames.FOUR, suit),counter++);
-                    deck.put(new Card(CardNames.THREE, suit),counter++);
-                    deck.put(new Card(CardNames.TWO, suit),counter++);
+                    fullDeck.put(counter++, new Card(CardNames.ACE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.KING, suit));
+                    fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.JACK, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.NINE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.EIGHT, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SEVEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SIX, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FIVE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FOUR, suit));
+                    fullDeck.put(counter++, new Card(CardNames.THREE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TWO, suit));
                     break;
 
                 case 2:
                     suit = "hearts";
-                    deck.put(new Card(CardNames.ACE, suit),counter++);
-                    deck.put(new Card(CardNames.KING, suit),counter++);
-                    deck.put(new Card(CardNames.QUEEN, suit),counter++);
-                    deck.put(new Card(CardNames.JACK, suit),counter++);
-                    deck.put(new Card(CardNames.TEN, suit),counter++);
-                    deck.put(new Card(CardNames.NINE, suit),counter++);
-                    deck.put(new Card(CardNames.EIGHT, suit),counter++);
-                    deck.put(new Card(CardNames.SEVEN, suit),counter++);
-                    deck.put(new Card(CardNames.SIX, suit),counter++);
-                    deck.put(new Card(CardNames.FIVE, suit),counter++);
-                    deck.put(new Card(CardNames.FOUR, suit),counter++);
-                    deck.put(new Card(CardNames.THREE, suit),counter++);
-                    deck.put(new Card(CardNames.TWO, suit),counter++);
+                    fullDeck.put(counter++, new Card(CardNames.ACE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.KING, suit));
+                    fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.JACK, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.NINE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.EIGHT, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SEVEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SIX, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FIVE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FOUR, suit));
+                    fullDeck.put(counter++, new Card(CardNames.THREE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TWO, suit));
                     break;
 
                 case 3:
                     suit = "diamonds";
-                    deck.put(new Card(CardNames.ACE, suit),counter++);
-                    deck.put(new Card(CardNames.KING, suit),counter++);
-                    deck.put(new Card(CardNames.QUEEN, suit),counter++);
-                    deck.put(new Card(CardNames.JACK, suit),counter++);
-                    deck.put(new Card(CardNames.TEN, suit),counter++);
-                    deck.put(new Card(CardNames.NINE, suit),counter++);
-                    deck.put(new Card(CardNames.EIGHT, suit),counter++);
-                    deck.put(new Card(CardNames.SEVEN, suit),counter++);
-                    deck.put(new Card(CardNames.SIX, suit),counter++);
-                    deck.put(new Card(CardNames.FIVE, suit),counter++);
-                    deck.put(new Card(CardNames.FOUR, suit),counter++);
-                    deck.put(new Card(CardNames.THREE, suit),counter++);
-                    deck.put(new Card(CardNames.TWO, suit),counter++);
+                    fullDeck.put(counter++, new Card(CardNames.ACE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.KING, suit));
+                    fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.JACK, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.NINE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.EIGHT, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SEVEN, suit));
+                    fullDeck.put(counter++, new Card(CardNames.SIX, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FIVE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.FOUR, suit));
+                    fullDeck.put(counter++, new Card(CardNames.THREE, suit));
+                    fullDeck.put(counter++, new Card(CardNames.TWO, suit));
                     break;
 
                 default:
@@ -109,18 +138,12 @@ public class Game {
             }
         }
 
-        return deck;
+        return fullDeck;
 
     }
 
-    public static void main(String[] args) {
-
-        Game game = new Game();
-        Server server = new Server();
-        server.listen();
-
-        game = null;
-
+    public void addToDealerHand(Card card){
+        dealerHand.add(card);
     }
 
 }
