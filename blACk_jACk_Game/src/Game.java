@@ -26,20 +26,37 @@ public class Game {
 
     public void distributeHands(){
 
+        System.out.println("Dealer hand:");
+
         for (int i = 0; i < 2; i++) {
-            int cardForDealer = Randomizer.getNumber(counter);
+
+            Integer[] remaining = new Integer[gameDeck.size()];
+            gameDeck.keySet().toArray(remaining);
+
+            int cardForDealer = remaining[Randomizer.getNumber(remaining.length)-1];
+
             Card currentCard = gameDeck.get(cardForDealer);
             gameDeck.remove(cardForDealer);
+
             addToDealerHand(currentCard);
+            System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
         }
 
         for(Player player: players){
 
+            System.out.println("player hand:");
+
             for (int i = 0; i < 2; i++) {
-                int cardForPlayer = Randomizer.getNumber(counter);
+
+                Integer[] remaining = new Integer[gameDeck.size()];
+                gameDeck.keySet().toArray(remaining);
+
+                int cardForPlayer = remaining[Randomizer.getNumber(remaining.length)-1];
+
                 Card currentCard = gameDeck.get(cardForPlayer);
                 gameDeck.remove(cardForPlayer);
                 player.addToHand(currentCard);
+                System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
             }
 
         }

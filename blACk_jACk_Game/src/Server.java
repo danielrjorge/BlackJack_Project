@@ -1,9 +1,13 @@
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
+import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Server {
 
@@ -11,7 +15,8 @@ public class Server {
     private Prompt prompt;
     private Socket clientSocket;
     private ServerSocket serverSocket;
-    private LinkedList<Client> list;
+    private List<Client> list;
+    private PrintStream printStream;
 
     public Server() {
 
@@ -26,27 +31,39 @@ public class Server {
     }
 
     public void listen() {
-        list = new LinkedList<>();
+        list = Collections.synchronizedList(new LinkedList<>());
         while (true) {
             // block waiting for a client to connect
             System.out.println("Waiting for a client connection");
             try {
                 clientSocket = serverSocket.accept();
+                printStream = new PrintStream(clientSocket.getOutputStream());
+                prompt = new Prompt(clientSocket.getInputStream(), printStream);
                 System.out.println("New client connection, socket: " + clientSocket.getPort());
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            list.add(new Client(clientSocket));
+            list.add(new Client(clientSocket, this));
 
-            Client clientConnection = new Client(clientSocket);
+            Client clientConnection = new Client(clientSocket, this);
 
             Thread clientThread = new Thread(clientConnection);
             clientThread.start();
 
+
         }
 
+    }
+
+    public void broadcast() {
+
+        for (Client test : list) {
+            StringInputScanner stringBroadcast = new StringInputScanner();
+            stringBroadcast.setMessage(test.getName() + " joined the lobby!");
+            stringBroadcast.show(printStream);
+        }
     }
 
 

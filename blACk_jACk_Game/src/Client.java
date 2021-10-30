@@ -12,7 +12,9 @@ public class Client implements Runnable {
     private String name;
     private Server server;
 
+
     public Client(Socket socket, Server server) {
+
         this.socket = socket;
         this.server = server;
 
