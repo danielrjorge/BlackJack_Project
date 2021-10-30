@@ -1,0 +1,40 @@
+WEBSERVER
+SERVER WAITS FOR PLAYERS
+SERVER COMMUNICATES ALL CARD TO ALL PLAYERS
+
+CLIENT
+CONNECTS TO SERVER
+ONLY ENTERS IN END OF ROUND
+ASSIGN CHIPS
+
+PLAYER extends CLIENT?
+has cards
+has to calculate points in hand.
+
+GAME_LOGIC
+
+BY ROUNDS
+players bet an amount of chips
+each player gets 2 cards that all players can see
+dealers gets 2 cards but only shows one.
+players choose to hit (get another card) or stand (no more cards)
+after all players decide, dealer shows card
+if dealer has less or equal to 16 he hits a card, else he stands
+players compare their hands to house.
+if win -> players get double their bet.
+if lose -> they lose their bet.
+if player gets 21 at start they win automatically and get 2.5x their bet.
+in case of draw, player gets their bet back.
+
+Card ENUM
+	array[52];
+	Points by card;
+	Naipe (non functional);
+	
+(ace is 1 or 11), normal cards have their number value, jack queen and king are worth 10;
+	
+CHIPS
+	int totalNumber;
+	add()
+	remove()
+	
