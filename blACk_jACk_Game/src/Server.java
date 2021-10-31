@@ -62,7 +62,6 @@ public class Server {
                 multipleClients.submit(clientConnection);
 
             }
-            System.out.println("here");
             game.setPlayers(list);
             GameLobby gameLobby = new GameLobby(game);
             multipleGames.submit(gameLobby);

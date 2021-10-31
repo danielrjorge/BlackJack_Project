@@ -43,16 +43,12 @@ public class Game {
 
     public void distributeHands() {
 
-        System.out.println("Dealer hand:");
-
         for (int i = 0; i < 2; i++) {
 
             addCardAndRemoveFromDeckDealer();
         }
 
         for (Player player : players) {
-
-            System.out.println("player hand:");
 
             for (int i = 0; i < 2; i++) {
                 addCardAndRemoveFromDeck(player);
@@ -371,7 +367,6 @@ public class Game {
         player.sumPoints(currentCard.getCardPoints());
         gameDeck.remove(remainingCards);
         player.addToHand(currentCard);
-        System.out.println(ANSI_CYAN + currentCard.getCardName() + " of " + currentCard.getSuit() + ANSI_RESET + "\n");
     }
 
     public void addCardAndRemoveFromDeckDealer() {
@@ -385,7 +380,6 @@ public class Game {
         gameDeck.remove(remainingCards);
         addToDealerHand(currentCard);
         dealerPoints += currentCard.getCardPoints();
-        System.out.println(ANSI_YELLOW + currentCard.getCardName() + " of " + currentCard.getSuit() + ANSI_RESET);
     }
 
     private void makeBets(LinkedList<Thread> threadList) {

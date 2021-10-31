@@ -97,14 +97,12 @@ public class PlayHand implements Runnable {
         public int chooseOption (){
             menu = new MenuInputScanner(options);
             int choose = player.getPrompt().getUserInput(menu);
-            System.out.println("User wants to " + options[choose - 1]);
             return choose;
         }
 
         public int chooseSecondOption(){
             menu = new MenuInputScanner(secondOption);
             int choose = player.getPrompt().getUserInput(menu);
-            System.out.println("User wants to " + secondOption[choose - 1]);
             return choose;
         }
 
