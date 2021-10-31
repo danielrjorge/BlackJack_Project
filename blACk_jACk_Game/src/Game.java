@@ -81,10 +81,13 @@ public class Game {
             threadList.remove(0);
         }
         distributeHands();
+
+        Thread.sleep(2000);
         //need to broadcast hands
         showDealerFirstCard();
-        showHands();
 
+        Thread.sleep(2000);
+        showHands();
 
         for (int i = 0; i < players.size(); i++) {
             threadList.add(new Thread(new PlayHand(players.get(i), this)));
@@ -99,16 +102,23 @@ public class Game {
             }
         }
 
+        Thread.sleep(2000);
+
         showDealerSecondCard();
+
+        Thread.sleep(2000);
 
         dealerLogic();
 
+        Thread.sleep(2000);
+
         broadcastTotalChips();
+
+        Thread.sleep(2000);
 
         prepareNextRound();
 
         Thread.sleep(5000);
-
 
     }
 
@@ -283,6 +293,12 @@ public class Game {
                     + " of " + dealerHand.get(1).getSuit()
                     + "\n Dealer's point total: " + dealerPoints);
         }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void dealerLogic(){
@@ -290,6 +306,15 @@ public class Game {
         while(!dealerBust && dealerPoints < 17) {
 
             addCardAndRemoveFromDeckDealer();
+
+            Card latestDealerCard = dealerHand.get(dealerHand.size()-1);
+            broadcastMessage("Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit());
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             if(dealerPoints > MAXPOINTS){
                 dealerBust = true;
