@@ -96,6 +96,7 @@ public class Client implements Runnable {
         this.name = prompt.getUserInput(question1);
         question1.setMessage("\nHello " + this.name + "\n");
         question1.show(printStream);
+        getPrintStream().println("2 player maximum in multiplayer!" + "\n");
     }
 
     public Server getServer() {
