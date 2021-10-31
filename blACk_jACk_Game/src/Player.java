@@ -109,4 +109,8 @@ public class Player extends Client {
     public void setBlackJack(boolean bool){
         hasBlackJack = bool;
     }
+
+    public void resetStood(){
+        hasStood = false;
+    }
 }

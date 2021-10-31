@@ -211,6 +211,7 @@ public class Game {
             player.resetBust();
             player.resetPoints();
             player.resetPlayerHand();
+            player.resetStood();
         }
         dealerBust = false;
         dealerPoints = 0;
@@ -366,12 +367,6 @@ public class Game {
                 + thisCard.getCardName() + " of " + thisCard.getSuit());
     }
 
-    public void isBust(Player player) {
-        if (player.getPoints() > MAXPOINTS) {
-            player.setBust();
-        }
-    }
-
     public void addCardAndRemoveFromDeck(Player player) {
 
         Integer[] remaining = new Integer[gameDeck.size()];
@@ -439,10 +434,4 @@ public class Game {
         return players;
     }
 
-    public void addPlayer(Player player){
-        while (playing == false){
-
-        }
-        players.add(player);
-    }
 }
