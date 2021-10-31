@@ -64,10 +64,11 @@ public class Game {
         distributeHands();
 
         Thread.sleep(2000);
-        //need to broadcast hands
+
         showDealerFirstCard();
 
         Thread.sleep(2000);
+
         showHands();
 
         playHands(threadList);
@@ -88,7 +89,7 @@ public class Game {
 
         prepareNextRound();
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
     }
 
@@ -319,6 +320,10 @@ public class Game {
         player.setBet(player.getBet() * 2);
         player.setChips(player.getChips() - player.getBet());
         player.setHasStood();
+
+        Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
+        player.getPrintStream().println("You got the card "
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints());
 
     }
 
