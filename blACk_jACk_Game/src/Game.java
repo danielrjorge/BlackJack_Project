@@ -8,8 +8,9 @@ public class Game {
     private LinkedHashMap<Integer, Card> fullDeck, gameDeck;
     private LinkedList<Player> players;
     private int counter = 52;
-    private final int MAXPOINTS = 21;
+    public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
+    private boolean dealerBust;
 
     public Game(LinkedList<Player> players) {
 
@@ -18,15 +19,14 @@ public class Game {
         this.dealerHand = new LinkedList<>();
         this.players = players;
 
-
     }
 
-    public void startGame() {
-        System.out.println("Here in start game");
+    public void startGame() throws InterruptedException {
         for (Player player : players) {
-            while (player.getName() == null || player.isPlayAlone() == -1) {
+            while (player.getName() == null || player.isPlayAlone() == -1 ) {
 
             }
+
         }
         startRound();
 
@@ -53,10 +53,10 @@ public class Game {
 
     }
 
-    public void startRound() {
-
+    public void startRound() throws InterruptedException {
+        Thread playerPlay = new Thread();
         LinkedList<Thread> threadList = new LinkedList<>();
-        System.out.println(players.size());
+
         for (int i = 0; i < players.size(); i++) {
 
             threadList.add(new Thread(new Bet(players.get(i))));
@@ -74,27 +74,36 @@ public class Game {
         }
 
 
-        while (threadList.size() != 0){
+        while (threadList.size() != 0) {
             threadList.remove(0);
         }
         distributeHands();
         //need to broadcast hands
+        showDealerFirstCard();
         showHands();
 
+
         for (int i = 0; i < players.size(); i++) {
-            threadList.add(new Thread(new PlayHand(players.get(i),this)));
+            threadList.add(new Thread(new PlayHand(players.get(i), this)));
             threadList.get(i).start();
         }
 
-
-
-        for (Thread thread: threadList) {
+        for (Thread thread : threadList) {
             try {
                 thread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        showDealerSecondCard();
+
+        dealerLogic();
+
+        broadcastTotalChips();
+
+        Thread.sleep(3000);
+
 
     }
 
@@ -194,6 +203,25 @@ public class Game {
         this.players = players;
     }
 
+    public void comparePoints(){
+        for(Player player : players){
+
+            broadcastMessage("Dealer total points is: " + dealerPoints);
+
+            if(player.isBust()){
+                broadcastMessage(player.getName() + " is bust, no reward for you!");
+            }
+            else if(player.getPoints() > dealerPoints || dealerBust){
+                player.setChips(player.getChips() + player.getBet() * 2);
+                broadcastMessage(player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!");
+            } else if (player.getPoints() == dealerPoints){
+                player.setChips(player.getChips() + player.getBet());
+                broadcastMessage(player.getName() + " tied with dealer! He got his chips back!");
+            } else {
+                broadcastMessage(player.getName() + " lost to dealer! He lost " + player.getBet() + " chips!");
+            }
+        }
+    }
 
     public void showHands() {
         for (Player player : players) {
@@ -202,34 +230,90 @@ public class Game {
                 for (Card card : each.getPlayerHand()) {
                     player.getPrintStream().println(card.getCardName() + " of " + card.getSuit());
                 }
+                player.getPrintStream().println("\n" + each.getName() + " total points: " + each.getPoints());
             }
         }
     }
 
+    public void broadcastMessage(String message){
+        for (Player player : players) {
+            player.getPrintStream().println(message);
+        }
+    }
+
+    public void broadcastTotalChips(){
+        for (Player player : players) {
+            for (Player each : players) {
+                player.getPrintStream().println("\n" + each.getName() + " total chips is: " + each.getChips());
+            }
+        }
+    }
+
+    public void showDealerFirstCard() {
+
+        for (Player player : players) {
+            player.getPrintStream().println("\nThe dealer's first card is:\n"
+                    + dealerHand.get(0).getCardName()
+                    + " of " + dealerHand.get(0).getSuit());
+        }
+    }
+
+    public void showDealerSecondCard() {
+
+        for (Player player : players) {
+            player.getPrintStream().println("\nThe dealer's second card is:\n"
+                    + dealerHand.get(1).getCardName()
+                    + " of " + dealerHand.get(1).getSuit()
+                    + "\n Dealer's point total: " + dealerPoints);
+        }
+    }
+
+    public void dealerLogic(){
+
+        while(!dealerBust && dealerPoints < 17) {
+
+            addCardAndRemoveFromDeckDealer();
+
+            if(dealerPoints > MAXPOINTS){
+                dealerBust = true;
+            }
+
+        }
+
+        comparePoints();
+
+    }
+
+
     public void hit(Player player) {
         addCardAndRemoveFromDeck(player);
+        Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
+        player.getPrintStream().println("You got the card "
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints());
+
     }
 
     public void hitDealer() {
         addCardAndRemoveFromDeckDealer();
     }
 
-    public  void stay(Player player){
+    public void stay(Player player) {
         player.getPrintStream().print(player.getName() + " has stayed");
         player.setHasStood();
-        
+
     }
 
-    public void doubleHit(Player player){
+    public void doubleHit(Player player) {
         addCardAndRemoveFromDeck(player);
         player.setBet(player.getBet() * 2);
         player.setChips(player.getChips() - player.getBet());
+        player.setHasStood();
 
     }
 
-    public void isBust(Player player){
-        if(player.getPoints() > MAXPOINTS){
-        player.setBust();
+    public void isBust(Player player) {
+        if (player.getPoints() > MAXPOINTS) {
+            player.setBust();
         }
     }
 
@@ -256,8 +340,8 @@ public class Game {
 
         Card currentCard = gameDeck.get(remainingCards);
         gameDeck.remove(remainingCards);
-        dealerPoints += currentCard.getCardPoints();
         addToDealerHand(currentCard);
+        dealerPoints += currentCard.getCardPoints();
         System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
     }
 
