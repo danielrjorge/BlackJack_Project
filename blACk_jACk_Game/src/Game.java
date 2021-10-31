@@ -14,7 +14,7 @@ public class Game {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
 
     public Game(LinkedList<Player> players) {
@@ -211,15 +211,15 @@ public class Game {
             broadcastMessage(ANSI_YELLOW + "Dealer total points is: " + dealerPoints + ANSI_RESET);
 
             if (player.isBust()) {
-                broadcastMessage(ANSI_BLUE + player.getName() + " is bust, no reward for you!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " is bust, no reward for you!" + ANSI_RESET);
             } else if (player.getPoints() > dealerPoints || dealerBust) {
                 player.setChips(player.getChips() + player.getBet() * 2);
-                broadcastMessage(ANSI_BLUE + player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!" + ANSI_RESET);
             } else if (player.getPoints() == dealerPoints) {
                 player.setChips(player.getChips() + player.getBet());
-                broadcastMessage(ANSI_BLUE + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET);
             } else {
-                broadcastMessage(ANSI_BLUE + player.getName() + " lost to dealer! He lost " + player.getBet() + " chips!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " lost to dealer! He lost " + player.getBet() + " chips!" + ANSI_RESET);
             }
         }
     }
@@ -227,11 +227,11 @@ public class Game {
     public void showHands() {
         for (Player player : players) {
             for (Player each : players) {
-                player.getPrintStream().println(ANSI_BLUE + "\n" + each.getName() + " hand is:" + ANSI_RESET);
+                player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " hand is:" + ANSI_RESET);
                 for (Card card : each.getPlayerHand()) {
-                    player.getPrintStream().println(ANSI_BLUE + card.getCardName() + " of " + card.getSuit() + ANSI_RESET);
+                    player.getPrintStream().println(ANSI_CYAN + card.getCardName() + " of " + card.getSuit() + ANSI_RESET);
                 }
-                player.getPrintStream().println(ANSI_BLUE + "\n" + each.getName() + " total points: " + each.getPoints() + ANSI_RESET);
+                player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " total points: " + each.getPoints() + ANSI_RESET);
             }
         }
     }
@@ -245,7 +245,7 @@ public class Game {
     public void broadcastTotalChips() {
         for (Player player : players) {
             for (Player each : players) {
-                player.getPrintStream().println("\n" + each.getName() + " total chips is: " + each.getChips());
+                player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " total chips is: " + each.getChips() + ANSI_RESET);
             }
         }
     }
@@ -304,8 +304,8 @@ public class Game {
     public void hit(Player player) {
         addCardAndRemoveFromDeck(player);
         Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
-        player.getPrintStream().println("You got the card "
-                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints());
+        player.getPrintStream().println(ANSI_CYAN + "You got the card "
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints() + ANSI_RESET);
 
     }
 
@@ -314,7 +314,7 @@ public class Game {
     }
 
     public void stay(Player player) {
-        player.getPrintStream().print(player.getName() + " has stayed");
+        player.getPrintStream().print(ANSI_CYAN + player.getName() + " has stayed" + ANSI_RESET);
         player.setHasStood();
 
     }
@@ -344,7 +344,7 @@ public class Game {
         player.sumPoints(currentCard.getCardPoints());
         gameDeck.remove(remainingCards);
         player.addToHand(currentCard);
-        System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
+        System.out.println(ANSI_CYAN + currentCard.getCardName() + " of " + currentCard.getSuit() + ANSI_RESET);
     }
 
     public void addCardAndRemoveFromDeckDealer() {
