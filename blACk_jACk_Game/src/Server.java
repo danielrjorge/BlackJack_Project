@@ -1,14 +1,10 @@
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
-import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -89,5 +85,9 @@ public class Server {
 
     public LinkedList<Player> getList() {
         return list;
+    }
+
+    public LinkedList<Player> getAllClients() {
+        return allClients;
     }
 }
