@@ -24,9 +24,9 @@ public class Bet implements Runnable {
         int chipsBet;
 
         try {
-        player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips() + "\n");
-        options = new String[]{"5", "25", "50", "100", "200", "to quit\n"};
-        menu = new MenuInputScanner(options);
+            player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips() + "\n");
+            options = new String[]{"5", "25", "50", "100", "200", "to quit\n"};
+            menu = new MenuInputScanner(options);
             menu.show(new PrintStream(player.getSocket().getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,17 +36,22 @@ public class Bet implements Runnable {
         while (true) {
             chipsBet = player.getPrompt().getUserInput(player.getScanner());
 
-            if (menuCases(chipsBet) == -1){
-                game.getPlayers().remove(player);
-                return;
-            }else if(menuCases(chipsBet) == -50){
-                while (menuCases(chipsBet) == -50){
+            if (menuCases(chipsBet) == -1) {
+                try {
+                    game.getPlayers().remove(player);
+                    player.getSocket().close();
+                    return;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (menuCases(chipsBet) == -50) {
+                while (menuCases(chipsBet) == -50) {
                     chipsBet = player.getPrompt().getUserInput(player.getScanner());
                 }
 
             }
             chipsBet = menuCases(chipsBet);
-            player.getPrintStream().println("You bet -> " + chipsBet+ "\n");
+            player.getPrintStream().println("You bet -> " + chipsBet + "\n");
 
             if (chipsBet > player.getChips()) {
                 player.getScanner().setMessage("Not enough chips for this bet, try again \n");
@@ -62,8 +67,8 @@ public class Bet implements Runnable {
 
     }
 
-    public int menuCases(int choice){
-        switch (choice){
+    public int menuCases(int choice) {
+        switch (choice) {
             case 1:
                 return 5;
             case 2:
