@@ -46,6 +46,14 @@ public class Game {
         for (int i = 0; i < 2; i++) {
 
             addCardAndRemoveFromDeckDealer();
+
+        }
+
+        //check if double ace
+        for(Card card: dealerHand){
+            if(card.getCardName() == CardNames.ACE && dealerPoints > 21){
+                card.setCardPoints(1);
+            }
         }
 
         for (Player player : players) {
@@ -54,7 +62,15 @@ public class Game {
                 addCardAndRemoveFromDeck(player);
             }
 
+            for(Card card: player.getPlayerHand()){
+                if(card.getCardName() == CardNames.ACE && dealerPoints > 21){
+                    card.setCardPoints(1);
+                }
+            }
+
         }
+
+
 
     }
 
@@ -342,8 +358,8 @@ public class Game {
 
     public void doubleHit(Player player) {
         addCardAndRemoveFromDeck(player);
-        player.setBet(player.getBet() * 2);
         player.setChips(player.getChips() - player.getBet());
+        player.setBet(player.getBet() * 2);
         player.setHasStood();
         Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
         player.getPrintStream().println("You got the card "
