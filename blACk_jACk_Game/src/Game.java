@@ -23,13 +23,13 @@ public class Game {
 
     public void startGame() throws InterruptedException {
         for (Player player : players) {
-            while (player.getName() == null || player.isPlayAlone() == -1) {
+            while (player.getName() == null || player.isPlayAlone() == -1 ) {
 
             }
 
         }
 
-        while (players.size() > 0) {
+        while(players.size() > 0) {
             startRound();
         }
 
@@ -57,10 +57,29 @@ public class Game {
     }
 
     public void startRound() throws InterruptedException {
+        Thread playerPlay = new Thread();
         LinkedList<Thread> threadList = new LinkedList<>();
 
-        makeBets(threadList);
+        for (int i = 0; i < players.size(); i++) {
 
+            threadList.add(new Thread(new Bet(players.get(i))));
+            threadList.get(i).start();
+
+        }
+        for (int i = 0; i < threadList.size(); i++) {
+            try {
+                threadList.get(i).join();
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        while (threadList.size() != 0) {
+            threadList.remove(0);
+        }
         distributeHands();
 
         Thread.sleep(2000);
@@ -70,7 +89,18 @@ public class Game {
         Thread.sleep(2000);
         showHands();
 
-        playHands(threadList);
+        for (int i = 0; i < players.size(); i++) {
+            threadList.add(new Thread(new PlayHand(players.get(i), this)));
+            threadList.get(i).start();
+        }
+
+        for (Thread thread : threadList) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         Thread.sleep(2000);
 
@@ -88,7 +118,7 @@ public class Game {
 
         prepareNextRound();
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
     }
 
@@ -188,7 +218,7 @@ public class Game {
         this.players = players;
     }
 
-    public void prepareNextRound() {
+    public void prepareNextRound(){
         for (Player player : players) {
             player.resetBust();
             player.resetPoints();
@@ -200,17 +230,18 @@ public class Game {
         gameDeck = fullDeck;
     }
 
-    public void comparePoints() {
-        for (Player player : players) {
+    public void comparePoints(){
+        for(Player player : players){
 
             broadcastMessage("Dealer total points is: " + dealerPoints);
 
-            if (player.isBust()) {
+            if(player.isBust()){
                 broadcastMessage(player.getName() + " is bust, no reward for you!");
-            } else if (player.getPoints() > dealerPoints || dealerBust) {
+            }
+            else if(player.getPoints() > dealerPoints || dealerBust){
                 player.setChips(player.getChips() + player.getBet() * 2);
                 broadcastMessage(player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!");
-            } else if (player.getPoints() == dealerPoints) {
+            } else if (player.getPoints() == dealerPoints){
                 player.setChips(player.getChips() + player.getBet());
                 broadcastMessage(player.getName() + " tied with dealer! He got his chips back!");
             } else {
@@ -231,13 +262,13 @@ public class Game {
         }
     }
 
-    public void broadcastMessage(String message) {
+    public void broadcastMessage(String message){
         for (Player player : players) {
             player.getPrintStream().println(message);
         }
     }
 
-    public void broadcastTotalChips() {
+    public void broadcastTotalChips(){
         for (Player player : players) {
             for (Player each : players) {
                 player.getPrintStream().println("\n" + each.getName() + " total chips is: " + each.getChips());
@@ -263,29 +294,18 @@ public class Game {
                     + "\n Dealer's point total: " + dealerPoints);
         }
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void dealerLogic() {
 
-        while (!dealerBust && dealerPoints < 17) {
+        while(!dealerBust && dealerPoints < 17) {
 
             addCardAndRemoveFromDeckDealer();
 
-            Card latestDealerCard = dealerHand.get(dealerHand.size() - 1);
+            Card latestDealerCard = dealerHand.get(dealerHand.size()-1);
             broadcastMessage("Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit());
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            if (dealerPoints > MAXPOINTS) {
+            if(dealerPoints > MAXPOINTS){
                 dealerBust = true;
             }
 
@@ -319,6 +339,9 @@ public class Game {
         player.setBet(player.getBet() * 2);
         player.setChips(player.getChips() - player.getBet());
         player.setHasStood();
+        Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
+        player.getPrintStream().println("You got the card "
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints());
 
     }
 
@@ -354,44 +377,6 @@ public class Game {
         addToDealerHand(currentCard);
         dealerPoints += currentCard.getCardPoints();
         System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
-    }
-
-    private void makeBets(LinkedList<Thread> threadList) {
-        for (int i = 0; i < players.size(); i++) {
-
-            threadList.add(new Thread(new Bet(players.get(i))));
-            threadList.get(i).start();
-
-        }
-        for (int i = 0; i < threadList.size(); i++) {
-            try {
-                threadList.get(i).join();
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-        while (threadList.size() != 0) {
-            threadList.remove(0);
-        }
-    }
-
-    private void playHands(LinkedList<Thread> threadList) {
-        for (int i = 0; i < players.size(); i++) {
-            threadList.add(new Thread(new PlayHand(players.get(i), this)));
-            threadList.get(i).start();
-        }
-
-        for (Thread thread : threadList) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 }
