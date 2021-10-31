@@ -296,7 +296,7 @@ public class Game {
 
     }
 
-    public void dealerLogic(){
+    public void dealerLogic() {
 
         while(!dealerBust && dealerPoints < 17) {
 
