@@ -265,7 +265,7 @@ public class Game {
             player.getPrintStream().println( ANSI_YELLOW +"\nThe dealer's second card is:\n"
                     + dealerHand.get(1).getCardName()
                     + " of " + dealerHand.get(1).getSuit()
-                    + "\n Dealer's point total:" + dealerPoints + ANSI_RESET);
+                    + ANSI_YELLOW + "\n Dealer's point total:" + dealerPoints + ANSI_RESET);
         }
 
         try {
@@ -305,7 +305,7 @@ public class Game {
         addCardAndRemoveFromDeck(player);
         Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
         player.getPrintStream().println(ANSI_CYAN + "You got the card "
-                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints() + ANSI_RESET);
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + ANSI_CYAN + "\nYour total points are " + player.getPoints() + ANSI_RESET);
 
     }
 
