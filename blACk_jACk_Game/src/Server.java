@@ -26,6 +26,8 @@ public class Server {
     private ExecutorService multipleGames;
     private final int maxClients = 6;
 
+
+
     public Server() {
         System.out.println("Binding to port " + port);
 
