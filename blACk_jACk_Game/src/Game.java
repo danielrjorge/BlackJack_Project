@@ -305,10 +305,6 @@ public class Game {
 
     }
 
-    public void hitDealer() {
-        addCardAndRemoveFromDeckDealer();
-    }
-
     public void stay(Player player) {
         player.getPrintStream().print(player.getName() + " has stayed");
         player.setHasStood();
