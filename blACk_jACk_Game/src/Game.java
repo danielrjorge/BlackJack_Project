@@ -77,8 +77,7 @@ public class Game {
             threadList.remove(0);
         }
         distributeHands();
-        //need to broadcast hands
-        showHands();
+        showHands(); //need to broadcast hands
 
         for (int i = 0; i < players.size(); i++) {
             threadList.add(new Thread(new PlayHand(players.get(i),this)));
