@@ -1,5 +1,6 @@
-public class Bet implements Runnable{
+public class Bet implements Runnable {
     private Player player;
+
     public Bet(Player player) {
         this.player = player;
     }
@@ -10,7 +11,6 @@ public class Bet implements Runnable{
 
     @Override
     public void run() {
-        System.out.println(player.getSocket());
         int chipsBet;
 
         player.getScanner().setMessage("Place your bet - Total chips available -> " + player.getChips() + "\n");

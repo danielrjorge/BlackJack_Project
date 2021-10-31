@@ -35,7 +35,7 @@ public class Server {
         }
     }
 
-    public void listen() {
+    public void listen() throws InterruptedException {
         game = new Game(list);
         list = new LinkedList<>();
         while (list.size() < 2) {
@@ -54,10 +54,12 @@ public class Server {
 
             Player clientConnection = new Player(clientSocket, this);
             list.add(clientConnection);
-            game.setPlayers(list);
+
             multipleClients.submit(clientConnection);
 
         }
+        System.out.println("here");
+        game.setPlayers(list);
         game.startGame();
 
     }
