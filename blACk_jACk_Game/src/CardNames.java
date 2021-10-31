@@ -15,11 +15,21 @@ public enum CardNames {
 
     private int points;
 
+    private String ascii;
+
     CardNames(int points){
         this.points = points;
     }
 
     public int getPoints() {
         return points;
+    }
+
+    public String getAscii() {
+        return ascii;
+    }
+
+    public void setAscii(String ascii) {
+        this.ascii = ascii;
     }
 }
