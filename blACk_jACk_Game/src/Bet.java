@@ -39,7 +39,8 @@ public class Bet implements Runnable {
             if (menuCases(chipsBet) == -1) {
                 try {
                     game.getPlayers().remove(player);
-
+                    player.getServer().getAllClients().remove(player);
+                    player.getServer().getList().remove(player);
                     player.getSocket().close();
                     return;
                 } catch (IOException e) {

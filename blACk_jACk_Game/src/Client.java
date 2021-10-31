@@ -98,4 +98,7 @@ public class Client implements Runnable {
         question1.show(printStream);
     }
 
+    public Server getServer() {
+        return server;
+    }
 }
