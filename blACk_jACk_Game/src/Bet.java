@@ -1,5 +1,4 @@
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
-import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -13,10 +12,6 @@ public class Bet implements Runnable {
     public Bet(Player player, Game game) {
         this.player = player;
         this.game = game;
-    }
-
-    public Bet() {
-
     }
 
     @Override
