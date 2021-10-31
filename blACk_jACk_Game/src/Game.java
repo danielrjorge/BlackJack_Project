@@ -107,7 +107,7 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 0:
-                    suit =ANSI_GREEN + "SPADES" + ANSI_RESET;
+                    suit =ANSI_GREEN + "SPADES ♠ " + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -124,7 +124,7 @@ public class Game {
                     break;
 
                 case 1:
-                    suit =ANSI_GREEN + "CLUBS" + ANSI_RESET;
+                    suit =ANSI_GREEN + "CLUBS ♣ " + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -141,7 +141,7 @@ public class Game {
                     break;
 
                 case 2:
-                    suit = ANSI_RED + "HEARTS" + ANSI_RESET;
+                    suit = ANSI_RED + "HEARTS ♥ " + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -158,7 +158,7 @@ public class Game {
                     break;
 
                 case 3:
-                    suit =ANSI_RED + "DIAMONDS" + ANSI_RESET;
+                    suit =ANSI_RED + "DIAMONDS ♦ " + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -265,7 +265,7 @@ public class Game {
             player.getPrintStream().println( ANSI_YELLOW +"\nThe dealer's second card is:\n"
                     + dealerHand.get(1).getCardName()
                     + " of " + dealerHand.get(1).getSuit()
-                    + "\n Dealer's point total: " + dealerPoints + ANSI_RESET);
+                    + "\n Dealer's point total:" + dealerPoints + ANSI_RESET);
         }
 
         try {
