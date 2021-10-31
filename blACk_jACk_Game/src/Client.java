@@ -85,7 +85,7 @@ public class Client implements Runnable {
         options.add("yes");
         options.add("no");
         StringSetInputScanner wantsToPlayAlone = new StringSetInputScanner(options);
-        wantsToPlayAlone.setMessage("Do you wish to play alone?\n");
+        wantsToPlayAlone.setMessage("Do you wish to play alone? (yes/no)\n");
         return wantsToPlayAlone;
     }
 
