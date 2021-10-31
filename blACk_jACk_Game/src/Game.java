@@ -11,6 +11,11 @@ public class Game {
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
     private boolean dealerBust;
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     public Game(LinkedList<Player> players) {
 
@@ -102,7 +107,7 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 0:
-                    suit = "SPADES";
+                    suit =ANSI_GREEN + "SPADES" + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -119,7 +124,7 @@ public class Game {
                     break;
 
                 case 1:
-                    suit = "CLUBS";
+                    suit =ANSI_GREEN + "CLUBS" + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -136,7 +141,7 @@ public class Game {
                     break;
 
                 case 2:
-                    suit = "HEARTS";
+                    suit = ANSI_RED + "HEARTS" + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -153,7 +158,7 @@ public class Game {
                     break;
 
                 case 3:
-                    suit = "DIAMONDS";
+                    suit =ANSI_RED + "DIAMONDS" + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -203,18 +208,18 @@ public class Game {
     public void comparePoints() {
         for (Player player : players) {
 
-            broadcastMessage("Dealer total points is: " + dealerPoints);
+            broadcastMessage(ANSI_YELLOW + "Dealer total points is: " + dealerPoints + ANSI_RESET);
 
             if (player.isBust()) {
-                broadcastMessage(player.getName() + " is bust, no reward for you!");
+                broadcastMessage(ANSI_BLUE + player.getName() + " is bust, no reward for you!" + ANSI_RESET);
             } else if (player.getPoints() > dealerPoints || dealerBust) {
                 player.setChips(player.getChips() + player.getBet() * 2);
-                broadcastMessage(player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!");
+                broadcastMessage(ANSI_BLUE + player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!" + ANSI_RESET);
             } else if (player.getPoints() == dealerPoints) {
                 player.setChips(player.getChips() + player.getBet());
-                broadcastMessage(player.getName() + " tied with dealer! He got his chips back!");
+                broadcastMessage(ANSI_BLUE + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET);
             } else {
-                broadcastMessage(player.getName() + " lost to dealer! He lost " + player.getBet() + " chips!");
+                broadcastMessage(ANSI_BLUE + player.getName() + " lost to dealer! He lost " + player.getBet() + " chips!" + ANSI_RESET);
             }
         }
     }
@@ -222,11 +227,11 @@ public class Game {
     public void showHands() {
         for (Player player : players) {
             for (Player each : players) {
-                player.getPrintStream().println("\n" + each.getName() + " hand is:");
+                player.getPrintStream().println(ANSI_BLUE + "\n" + each.getName() + " hand is:" + ANSI_RESET);
                 for (Card card : each.getPlayerHand()) {
-                    player.getPrintStream().println(card.getCardName() + " of " + card.getSuit());
+                    player.getPrintStream().println(ANSI_BLUE + card.getCardName() + " of " + card.getSuit() + ANSI_RESET);
                 }
-                player.getPrintStream().println("\n" + each.getName() + " total points: " + each.getPoints());
+                player.getPrintStream().println(ANSI_BLUE + "\n" + each.getName() + " total points: " + each.getPoints() + ANSI_RESET);
             }
         }
     }
@@ -248,19 +253,19 @@ public class Game {
     public void showDealerFirstCard() {
 
         for (Player player : players) {
-            player.getPrintStream().println("\nThe dealer's first card is:\n"
+            player.getPrintStream().println(ANSI_YELLOW + "\nThe dealer's first card is:\n"
                     + dealerHand.get(0).getCardName()
-                    + " of " + dealerHand.get(0).getSuit());
+                    + " of " + dealerHand.get(0).getSuit() + ANSI_RESET);
         }
     }
 
     public void showDealerSecondCard() {
 
         for (Player player : players) {
-            player.getPrintStream().println("\nThe dealer's second card is:\n"
+            player.getPrintStream().println( ANSI_YELLOW +"\nThe dealer's second card is:\n"
                     + dealerHand.get(1).getCardName()
                     + " of " + dealerHand.get(1).getSuit()
-                    + "\n Dealer's point total: " + dealerPoints);
+                    + "\n Dealer's point total: " + dealerPoints + ANSI_RESET);
         }
 
         try {
@@ -277,7 +282,7 @@ public class Game {
             addCardAndRemoveFromDeckDealer();
 
             Card latestDealerCard = dealerHand.get(dealerHand.size() - 1);
-            broadcastMessage("Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit());
+            broadcastMessage(ANSI_YELLOW + "Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit() + ANSI_RESET);
 
             try {
                 Thread.sleep(2000);
@@ -353,7 +358,7 @@ public class Game {
         gameDeck.remove(remainingCards);
         addToDealerHand(currentCard);
         dealerPoints += currentCard.getCardPoints();
-        System.out.println(currentCard.getCardName() + " of " + currentCard.getSuit());
+        System.out.println(ANSI_YELLOW + currentCard.getCardName() + " of " + currentCard.getSuit() + ANSI_RESET);
     }
 
     private void makeBets(LinkedList<Thread> threadList) {
