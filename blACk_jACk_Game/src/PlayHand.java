@@ -36,9 +36,7 @@ public class PlayHand implements Runnable {
             case 3:
                 //as we removed chips when betting, now you only need to check if it is lower than another equal bet (bet * 2)
                 if (player.getChips() < player.getBet()) {
-                    player.setBet(player.getChips());
-                    player.setChips(0);
-                    player.getPrintStream().println("You doubled, but at what cost?");
+                    player.getPrintStream().println("You tried to double, but you don't have enough chips, hitting instead");
                     game.hit(player);
                     break;
                 }
