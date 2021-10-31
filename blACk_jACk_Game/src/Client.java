@@ -37,7 +37,11 @@ public class Client implements Runnable {
 
         greetPlayer(); //asks player name and greets him/her
         if (prompt.getUserInput(askPlayAlone()).equals("yes")) {  //asks if player wants to play alone
-            startAloneGame();  //start game alone
+            try {
+                startAloneGame();  //start game alone
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             playAlone = 0;
         }
@@ -68,7 +72,7 @@ public class Client implements Runnable {
 
     }
 
-    private void startAloneGame() {
+    private void startAloneGame() throws InterruptedException {
         playAlone = 1;
         server.getList().remove(this);
         LinkedList<Player> solo = new LinkedList<>();

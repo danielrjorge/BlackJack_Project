@@ -35,7 +35,7 @@ public class Server {
         }
     }
 
-    public void listen() {
+    public void listen() throws InterruptedException {
         game = new Game(list);
         list = new LinkedList<>();
         while (list.size() < 2) {
