@@ -4,7 +4,6 @@ import java.util.LinkedList;
 public class Player extends Client {
 
     private LinkedList<Card> playerHand;
-    private String name;
     private int chips;
     private int bet;
     private int points = 0;

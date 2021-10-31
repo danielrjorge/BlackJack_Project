@@ -11,10 +11,6 @@ public class Game {
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
     private boolean dealerBust;
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
 
     public Game(LinkedList<Player> players) {
 
@@ -41,7 +37,7 @@ public class Game {
 
     public void distributeHands() {
 
-        System.out.println(ANSI_GREEN + "Dealer hand:" + ANSI_RESET);
+        System.out.println("Dealer hand:");
 
         for (int i = 0; i < 2; i++) {
 
@@ -50,7 +46,7 @@ public class Game {
 
         for (Player player : players) {
 
-            System.out.println(ANSI_GREEN + "player hand:" + ANSI_RESET);
+            System.out.println("player hand:");
 
             for (int i = 0; i < 2; i++) {
                 addCardAndRemoveFromDeck(player);
@@ -106,7 +102,7 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 0:
-                    suit ="SPADES ♠ ";
+                    suit = "SPADES";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -123,7 +119,7 @@ public class Game {
                     break;
 
                 case 1:
-                    suit = "CLUBS ♣ ";
+                    suit = "CLUBS";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -140,7 +136,7 @@ public class Game {
                     break;
 
                 case 2:
-                    suit = ANSI_RED +"HEARTS ♥ " + ANSI_RESET;
+                    suit = "HEARTS";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -157,7 +153,7 @@ public class Game {
                     break;
 
                 case 3:
-                    suit = ANSI_RED + "DIAMONDS ♦ " + ANSI_RESET;
+                    suit = "DIAMONDS";
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -174,7 +170,7 @@ public class Game {
                     break;
 
                 default:
-                    System.out.println(ANSI_RED + "Error in creating full set of cards" + ANSI_RESET);
+                    System.out.println("Error in creating full set of cards");
                     break;
 
             }
@@ -207,7 +203,7 @@ public class Game {
     public void comparePoints() {
         for (Player player : players) {
 
-            broadcastMessage("Dealer total points is: " + dealerPoints );
+            broadcastMessage("Dealer total points is: " + dealerPoints);
 
             if (player.isBust()) {
                 broadcastMessage(player.getName() + " is bust, no reward for you!");
