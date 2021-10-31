@@ -24,6 +24,7 @@ public class Bet implements Runnable {
                 break;
             }
         }
+        player.getPrintStream().println("Waiting for other players...");
 
         player.setBet(chipsBet);
         player.setChips(player.getChips() - chipsBet);

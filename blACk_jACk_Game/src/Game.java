@@ -66,8 +66,7 @@ public class Game {
         makeBets(threadList);
 
         distributeHands();
-
-        Thread.sleep(2000);
+        
         //need to broadcast hands
         showDealerFirstCard();
 
@@ -400,7 +399,6 @@ public class Game {
             }
 
         }
-
 
         while (threadList.size() != 0) {
             threadList.remove(0);
