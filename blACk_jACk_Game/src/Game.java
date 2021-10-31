@@ -7,7 +7,6 @@ public class Game {
 
     private LinkedHashMap<Integer, Card> fullDeck, gameDeck;
     private LinkedList<Player> players;
-    private int counter = 52;
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
     private boolean dealerBust;
@@ -214,7 +213,11 @@ public class Game {
 
             if (player.isBust()) {
                 broadcastMessage(ANSI_CYAN + player.getName() + " is bust, no reward for you!" + ANSI_RESET);
-            } else if (player.getPoints() > dealerPoints || dealerBust) {
+            } else if (player.hasBlackJack()){
+                player.setChips(player.getChips() + player.getBet() * 3);
+                broadcastMessage(ANSI_CYAN + player.getName() + " won the hand with a BLACKJACK! He got " + player.getBet() * 3 + " chips!" + ANSI_RESET);
+            }
+            else if (player.getPoints() > dealerPoints || dealerBust) {
                 player.setChips(player.getChips() + player.getBet() * 2);
                 broadcastMessage(ANSI_CYAN + player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!" + ANSI_RESET);
             } else if (player.getPoints() == dealerPoints) {

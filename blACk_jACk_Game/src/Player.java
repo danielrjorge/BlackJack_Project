@@ -9,6 +9,7 @@ public class Player extends Client {
     private int points = 0;
     private boolean isBust;
     private boolean hasStood;
+    private boolean hasBlackJack;
 
     //for tests
     public Player(){
@@ -99,5 +100,13 @@ public class Player extends Client {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public boolean hasBlackJack() {
+        return hasBlackJack;
+    }
+
+    public void setBlackJack(boolean bool){
+        hasBlackJack = bool;
     }
 }

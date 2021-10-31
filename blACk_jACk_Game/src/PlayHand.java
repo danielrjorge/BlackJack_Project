@@ -16,6 +16,14 @@ public class PlayHand implements Runnable {
 
     @Override
     public void run() {
+
+        //check for blackjack
+        if(player.getPoints() == 21){
+            player.getPrintStream().println("You got a BlackJack!");
+            player.setBlackJack(true);
+            return;
+        }
+
         displayMenu();
         int choice = chooseOption();
         switch (choice) {
