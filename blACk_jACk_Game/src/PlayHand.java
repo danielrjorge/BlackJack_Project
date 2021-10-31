@@ -27,7 +27,7 @@ public class PlayHand implements Runnable {
                 break;
             case 3:
                 if (player.getChips() < player.getBet() * 2) {
-                    System.out.println("Not enough maney");
+                    player.getPrintStream().println("You don't have enough chips for double");
                     break;
                 }
                 game.doubleHit(player);

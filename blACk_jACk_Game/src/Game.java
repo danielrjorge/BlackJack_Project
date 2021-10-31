@@ -118,7 +118,7 @@ public class Game {
 
         prepareNextRound();
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
     }
 
@@ -294,11 +294,6 @@ public class Game {
                     + "\n Dealer's point total: " + dealerPoints);
         }
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void dealerLogic(){
@@ -309,12 +304,6 @@ public class Game {
 
             Card latestDealerCard = dealerHand.get(dealerHand.size()-1);
             broadcastMessage("Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit());
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             if(dealerPoints > MAXPOINTS){
                 dealerBust = true;
@@ -350,6 +339,9 @@ public class Game {
         player.setBet(player.getBet() * 2);
         player.setChips(player.getChips() - player.getBet());
         player.setHasStood();
+        Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
+        player.getPrintStream().println("You got the card "
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints());
 
     }
 
