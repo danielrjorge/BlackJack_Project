@@ -9,7 +9,7 @@ public class Game {
     private LinkedList<Player> players;
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
-    private boolean dealerBust;
+    private boolean dealerBust, dealerBlackJack;
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
@@ -213,9 +213,12 @@ public class Game {
 
             if (player.isBust()) {
                 broadcastMessage(ANSI_CYAN + player.getName() + " is bust, no reward for you!" + ANSI_RESET);
-            } else if (player.hasBlackJack()){
+            } else if (player.hasBlackJack() && !dealerBlackJack){
                 player.setChips(player.getChips() + player.getBet() * 3);
                 broadcastMessage(ANSI_CYAN + player.getName() + " won the hand with a BLACKJACK! He got " + player.getBet() * 3 + " chips!" + ANSI_RESET);
+            } else if(player.hasBlackJack() && dealerBlackJack){
+                player.setChips(player.getChips() + player.getBet());
+                broadcastMessage(ANSI_CYAN + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET);
             }
             else if (player.getPoints() > dealerPoints || dealerBust) {
                 player.setChips(player.getChips() + player.getBet() * 2);
@@ -287,6 +290,13 @@ public class Game {
     }
 
     public void dealerLogic() {
+
+        if(dealerPoints == 21){
+            dealerBlackJack = true;
+            broadcastMessage("Dealer got BLACKJACK!");
+            comparePoints();
+            return;
+        }
 
         while (!dealerBust && dealerPoints < 17) {
 
