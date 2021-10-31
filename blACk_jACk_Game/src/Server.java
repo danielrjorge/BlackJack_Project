@@ -21,47 +21,54 @@ public class Server {
     private LinkedList<Player> list;
     private PrintStream printStream;
     private Game game;
+    private LinkedList<Player> allClients;
     private ExecutorService multipleClients;
+    private ExecutorService multipleGames;
+    private final int maxClients = 6;
 
     public Server() {
         System.out.println("Binding to port " + port);
 
         try {
+            allClients = new LinkedList<>();
             serverSocket = new ServerSocket(port);
             System.out.println("Server started: " + serverSocket);
             this.multipleClients = Executors.newCachedThreadPool();
+            this.multipleGames = Executors.newCachedThreadPool();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void listen() throws InterruptedException {
-        game = new Game(list);
-        list = new LinkedList<>();
-        while (list.size() < 2) {
-            // block waiting for a client to connect
-            System.out.println("Waiting for a client connection");
-            try {
-                clientSocket = serverSocket.accept();
-                printStream = new PrintStream(clientSocket.getOutputStream());
-                prompt = new Prompt(clientSocket.getInputStream(), printStream);
-                System.out.println("New client connection, socket: " + clientSocket.getPort());
+        while (allClients.size() < maxClients) {
+            game = new Game(list);
+            list = new LinkedList<>();
+            while (list.size() < 2) {
+                // block waiting for a client to connect
+                System.out.println("Waiting for a client connection");
+                try {
+                    clientSocket = serverSocket.accept();
+                    printStream = new PrintStream(clientSocket.getOutputStream());
+                    prompt = new Prompt(clientSocket.getInputStream(), printStream);
+                    System.out.println("New client connection, socket: " + clientSocket.getPort());
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                Player clientConnection = new Player(clientSocket, this);
+                list.add(clientConnection);
+
+                multipleClients.submit(clientConnection);
+
             }
-
-
-            Player clientConnection = new Player(clientSocket, this);
-            list.add(clientConnection);
-
-            multipleClients.submit(clientConnection);
-
+            System.out.println("here");
+            game.setPlayers(list);
+            GameLobby gameLobby = new GameLobby(game);
+            multipleGames.submit(gameLobby);
         }
-        System.out.println("here");
-        game.setPlayers(list);
-        game.startGame();
-
     }
 
     public void broadcast() {
