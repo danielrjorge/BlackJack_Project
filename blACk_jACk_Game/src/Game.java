@@ -229,6 +229,8 @@ public class Game {
     public void isBust(Player player){
         if(player.getPoints() > MAXPOINTS){
         player.setBust();
+
+
         }
     }
 
