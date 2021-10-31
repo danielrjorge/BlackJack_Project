@@ -42,7 +42,7 @@ public class Server {
         while (allClients.size() < maxClients) {
             game = new Game(list);
             list = new LinkedList<>();
-            while (list.size() < 2) {
+            while (list.size() <= 1) {
                 // block waiting for a client to connect
                 System.out.println("Waiting for a client connection");
                 try {
@@ -55,9 +55,8 @@ public class Server {
                     e.printStackTrace();
                 }
 
-
                 Player clientConnection = new Player(clientSocket, this);
-                list.add(clientConnection);
+
                 allClients.add(clientConnection);
                 multipleClients.submit(clientConnection);
 
