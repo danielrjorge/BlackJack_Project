@@ -15,6 +15,7 @@ public class Game {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
+    private boolean playing;
 
     public Game(LinkedList<Player> players) {
 
@@ -35,6 +36,7 @@ public class Game {
 
         while(players.size() > 0) {
             startRound();
+            playing = false;
         }
 
     }
@@ -61,6 +63,7 @@ public class Game {
     }
 
     public void startRound() throws InterruptedException {
+        playing = true;
         LinkedList<Thread> threadList = new LinkedList<>();
 
         makeBets(threadList);
@@ -386,7 +389,7 @@ public class Game {
     private void makeBets(LinkedList<Thread> threadList) {
         for (int i = 0; i < players.size(); i++) {
 
-            threadList.add(new Thread(new Bet(players.get(i))));
+            threadList.add(new Thread(new Bet(players.get(i),this)));
             threadList.get(i).start();
 
         }
@@ -420,4 +423,14 @@ public class Game {
         }
     }
 
+    public LinkedList<Player> getPlayers() {
+        return players;
+    }
+
+    public void addPlayer(Player player){
+        while (playing == false){
+
+        }
+        players.add(player);
+    }
 }
