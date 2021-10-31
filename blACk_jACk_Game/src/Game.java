@@ -312,13 +312,12 @@ public class Game {
     public void stay(Player player) {
         player.getPrintStream().print(player.getName() + " has stayed");
         player.setHasStood();
-
     }
 
     public void doubleHit(Player player) {
         addCardAndRemoveFromDeck(player);
-        player.setBet(player.getBet() * 2);
         player.setChips(player.getChips() - player.getBet());
+        player.setBet(player.getBet() * 2);
         player.setHasStood();
 
         Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
