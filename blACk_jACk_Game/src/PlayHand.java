@@ -47,6 +47,7 @@ public class PlayHand implements Runnable {
 
         player.setPoints(player.calculateHandPoints());
 
+        player.getPrintStream().println(player.getName() + " hand points is: " + player.getPoints());
 
         if (player.getPoints() > game.MAXPOINTS) {
             player.setBust();
@@ -58,6 +59,7 @@ public class PlayHand implements Runnable {
             switch (secondChoice) {
                 case 1:
                     game.hit(player);
+                    player.getPrintStream().println(player.getName() + " hand points is: " + player.getPoints());
                     break;
                 case 2:
                     game.stay(player);

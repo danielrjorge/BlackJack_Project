@@ -93,7 +93,7 @@ public class Game {
 
         prepareNextRound();
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
     }
 
@@ -208,7 +208,9 @@ public class Game {
     public void comparePoints() {
         for (Player player : players) {
 
-            broadcastMessage(ANSI_YELLOW + "Dealer total points is: " + dealerPoints + ANSI_RESET);
+            player.getPrintStream().println(ANSI_YELLOW + "\nDealer total points is: " + dealerPoints + ANSI_RESET);
+
+            broadcastTotalPoints(player);
 
             if (player.isBust()) {
                 broadcastMessage(ANSI_CYAN + player.getName() + " is bust, no reward for you!" + ANSI_RESET);
@@ -247,6 +249,12 @@ public class Game {
             for (Player each : players) {
                 player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " total chips is: " + each.getChips() + ANSI_RESET);
             }
+        }
+    }
+
+    public void broadcastTotalPoints(Player player) {
+        for (Player play : players) {
+            player.getPrintStream().println(ANSI_CYAN + "\n" + play.getName() + " total points is: " + play.getPoints() + ANSI_RESET);
         }
     }
 
@@ -311,16 +319,12 @@ public class Game {
         addCardAndRemoveFromDeck(player);
         Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
         player.getPrintStream().println(ANSI_CYAN + "You got the card "
-                + thisCard.getCardName() + " of " + thisCard.getSuit() + ANSI_CYAN + "\nYour total points are " + player.getPoints() + ANSI_RESET);
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + ANSI_RESET);
 
-    }
-
-    public void hitDealer() {
-        addCardAndRemoveFromDeckDealer();
     }
 
     public void stay(Player player) {
-        player.getPrintStream().print(ANSI_CYAN + player.getName() + " has stayed" + ANSI_RESET);
+        player.getPrintStream().print(ANSI_CYAN + player.getName() + " has stayed\n" + ANSI_RESET);
         player.setHasStood();
 
     }
