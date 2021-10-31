@@ -29,6 +29,7 @@ public class Server {
 
 
     public Server() {
+
         System.out.println("Binding to port " + port);
 
         try {
