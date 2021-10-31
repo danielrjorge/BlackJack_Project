@@ -58,7 +58,7 @@ public class Server {
 
                 Player clientConnection = new Player(clientSocket, this);
                 list.add(clientConnection);
-
+                allClients.add(clientConnection);
                 multipleClients.submit(clientConnection);
 
             }
@@ -66,6 +66,20 @@ public class Server {
             GameLobby gameLobby = new GameLobby(game);
             multipleGames.submit(gameLobby);
         }
+
+        try {
+            clientSocket = serverSocket.accept();
+            printStream = new PrintStream(clientSocket.getOutputStream());
+            prompt = new Prompt(clientSocket.getInputStream(), printStream);
+            System.out.println("New client connection, socket: " + clientSocket.getPort());
+            printStream.println("Server full!");
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     public void broadcast() {

@@ -35,7 +35,7 @@ public class Client implements Runnable {
     @Override
     public void run() {
 
-        greetPlayer(); //asks player name and greets him/her
+        greetPlayer();
         if (prompt.getUserInput(askPlayAlone()).equals("yes")) {  //asks if player wants to play alone
             try {
                 startAloneGame();  //start game alone
