@@ -212,18 +212,23 @@ public class Game {
     public void hitDealer() {
         addCardAndRemoveFromDeckDealer();
     }
-    
+
     public  void stay(Player player){
         player.getPrintStream().print(player.getName() + " has stayed");
+        player.setHasStood();
         
     }
 
-    public boolean isBust(Player player){
-        if(player.getPoints() > MAXPOINTS){
+    public void doubleHit(Player player){
+        addCardAndRemoveFromDeck(player);
+        player.setBet(player.getBet() * 2);
+        player.setChips(player.getChips() - player.getBet());
 
-            return true;
-        } else {
-            return false;
+    }
+
+    public void isBust(Player player){
+        if(player.getPoints() > MAXPOINTS){
+        player.setBust();
         }
     }
 

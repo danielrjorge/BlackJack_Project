@@ -9,7 +9,7 @@ public class PlayHand implements Runnable {
     public PlayHand(Player player, Game game) {
         this.player = player;
         this.game = game;
-        options = new String[]{"Hit", "Stand"};
+        options = new String[]{"Hit", "Stand", "Double"};
         menu = new MenuInputScanner(options);
     }
 
@@ -23,6 +23,14 @@ public class PlayHand implements Runnable {
                 break;
             case 2:
                 game.stay(player);
+                break;
+            case 3:
+                if (player.getChips() < player.getBet() * 2){
+                    System.out.println("Not enough maney");
+                    break;
+                }
+                game.doubleHit(player);
+                break;
             default:
                 break;
         }

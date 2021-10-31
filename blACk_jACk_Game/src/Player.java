@@ -8,6 +8,8 @@ public class Player extends Client {
     private int chips;
     private int bet;
     private int points = 0;
+    private boolean isBust;
+    private boolean hasStood;
 
     //for tests
     public Player(){
@@ -58,5 +60,21 @@ public class Player extends Client {
 
     public int getPoints() {
         return points;
+    }
+
+    public boolean isBust() {
+        return isBust;
+    }
+
+    public boolean isHasStood() {
+        return hasStood;
+    }
+
+    public void setBust() {
+        isBust = true;
+    }
+
+    public void setHasStood() {
+        hasStood = true;
     }
 }
