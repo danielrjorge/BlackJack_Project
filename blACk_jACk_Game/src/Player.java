@@ -38,6 +38,10 @@ public class Player extends Client {
         return playerHand;
     }
 
+    public void resetPlayerHand(){
+        this.playerHand = new LinkedList<>();
+    }
+
     public void setChips(int chips) {
         this.chips = chips;
     }
@@ -62,6 +66,10 @@ public class Player extends Client {
         return points;
     }
 
+    public void resetPoints(){
+        this.points = 0;
+    }
+
     public boolean isBust() {
         return isBust;
     }
@@ -72,6 +80,10 @@ public class Player extends Client {
 
     public void setBust() {
         isBust = true;
+    }
+
+    public void resetBust() {
+        isBust = false;
     }
 
     public void setHasStood() {

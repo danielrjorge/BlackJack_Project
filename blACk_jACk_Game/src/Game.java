@@ -28,7 +28,10 @@ public class Game {
             }
 
         }
-        startRound();
+
+        while(players.size() > 0) {
+            startRound();
+        }
 
     }
 
@@ -102,7 +105,9 @@ public class Game {
 
         broadcastTotalChips();
 
-        Thread.sleep(3000);
+        prepareNextRound();
+
+        Thread.sleep(5000);
 
 
     }
@@ -201,6 +206,18 @@ public class Game {
 
     public void setPlayers(LinkedList<Player> players) {
         this.players = players;
+    }
+
+    public void prepareNextRound(){
+        for (Player player : players) {
+            player.resetBust();
+            player.resetPoints();
+            player.resetPlayerHand();
+        }
+        dealerBust = false;
+        dealerPoints = 0;
+        dealerHand = new LinkedList<>();
+        gameDeck = fullDeck;
     }
 
     public void comparePoints(){
