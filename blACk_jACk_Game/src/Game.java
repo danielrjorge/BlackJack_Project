@@ -21,11 +21,11 @@ public class Game {
     }
 
     public void startGame() {
+        System.out.println("Here in start game");
         for (Player player : players) {
-            while (player.getName() == null) {
+            while (player.getName() == null || player.isPlayAlone() == -1) {
 
             }
-
         }
         startRound();
 
@@ -53,9 +53,9 @@ public class Game {
     }
 
     public void startRound() {
-        Thread playerPlay = new Thread();
-        LinkedList<Thread> threadList = new LinkedList<>();
 
+        LinkedList<Thread> threadList = new LinkedList<>();
+        System.out.println(players.size());
         for (int i = 0; i < players.size(); i++) {
 
             threadList.add(new Thread(new Bet(players.get(i))));

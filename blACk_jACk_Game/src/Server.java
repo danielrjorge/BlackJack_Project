@@ -54,10 +54,12 @@ public class Server {
 
             Player clientConnection = new Player(clientSocket, this);
             list.add(clientConnection);
-            game.setPlayers(list);
+
             multipleClients.submit(clientConnection);
 
         }
+        System.out.println("here");
+        game.setPlayers(list);
         game.startGame();
 
     }
