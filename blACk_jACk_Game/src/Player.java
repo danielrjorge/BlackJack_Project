@@ -88,4 +88,16 @@ public class Player extends Client {
     public void setHasStood() {
         hasStood = true;
     }
+
+    public int calculateHandPoints(){
+        int value = 0;
+        for(Card card: playerHand){
+            value += card.getCardPoints();
+        }
+        return value;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
 }

@@ -288,6 +288,13 @@ public class Game {
 
             addCardAndRemoveFromDeckDealer();
 
+            //change ace value to 1
+            for(Card card: dealerHand){
+                if(card.getCardName() == CardNames.ACE && dealerPoints > 21){
+                    card.setCardPoints(1);
+                }
+            }
+
             Card latestDealerCard = dealerHand.get(dealerHand.size() - 1);
             broadcastMessage("Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit() + " -> " + latestDealerCard.getCardPoints() + "\n");
 
@@ -320,10 +327,7 @@ public class Game {
 
         comparePoints();
 
-
-
     }
-
 
     public void hit(Player player) {
         addCardAndRemoveFromDeck(player);

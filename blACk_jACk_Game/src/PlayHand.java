@@ -37,6 +37,17 @@ public class PlayHand implements Runnable {
                 break;
         }
 
+        //change ace value to 1 and recalculate points
+        for(Card card: player.getPlayerHand()){
+            if(card.getCardName() == CardNames.ACE && player.getPoints() > 21){
+                card.setCardPoints(1);
+                break;
+            }
+        }
+
+        player.setPoints(player.calculateHandPoints());
+
+
         if (player.getPoints() > game.MAXPOINTS) {
             player.setBust();
             player.getPrintStream().println("You are bust! Wait for next round");
@@ -53,6 +64,12 @@ public class PlayHand implements Runnable {
                     break;
                 default:
                     break;
+            }
+
+            for(Card card: player.getPlayerHand()){
+                if(card.getCardName() == CardNames.ACE && player.getPoints() > 21){
+                    card.setCardPoints(1);
+                }
             }
 
             if (player.getPoints() > game.MAXPOINTS) {

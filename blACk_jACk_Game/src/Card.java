@@ -21,4 +21,8 @@ public class Card {
     public int getCardPoints() {
         return cardPoints;
     }
+
+    public void setCardPoints(int cardPoints) {
+        this.cardPoints = cardPoints;
+    }
 }
