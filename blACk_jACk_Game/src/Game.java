@@ -9,7 +9,7 @@ public class Game {
     private LinkedList<Player> players;
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
-    private boolean dealerBust;
+    private boolean dealerBust, dealerBlackJack;
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
@@ -210,24 +210,27 @@ public class Game {
     public void comparePoints() {
         for (Player player : players) {
 
-            player.getPrintStream().println(ANSI_YELLOW + "\nDealer total points is: " + dealerPoints + ANSI_RESET);
+            player.getPrintStream().println(ANSI_YELLOW + "\nDealer total points is: " + dealerPoints + ANSI_RESET + "\n");
 
             broadcastTotalPoints(player);
 
             if (player.isBust()) {
-                broadcastMessage(ANSI_CYAN + player.getName() + " is bust, no reward for you!" + ANSI_RESET);
-            } else if (player.hasBlackJack()){
+                broadcastMessage(ANSI_CYAN + player.getName() + " is bust, no reward for you!" + ANSI_RESET + "\n");
+            } else if (player.hasBlackJack() && !dealerBlackJack){
                 player.setChips(player.getChips() + player.getBet() * 3);
-                broadcastMessage(ANSI_CYAN + player.getName() + " won the hand with a BLACKJACK! He got " + player.getBet() * 3 + " chips!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " won the hand with a BLACKJACK! He got " + player.getBet() * 3 + " chips!" + ANSI_RESET + "\n");
+            } else if(player.hasBlackJack() && dealerBlackJack){
+                player.setChips(player.getChips() + player.getBet());
+                broadcastMessage(ANSI_CYAN + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET + "\n");
             }
             else if (player.getPoints() > dealerPoints || dealerBust) {
                 player.setChips(player.getChips() + player.getBet() * 2);
-                broadcastMessage(ANSI_CYAN + player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " won the hand! He got " + player.getBet() * 2 + " chips!" + ANSI_RESET + "\n");
             } else if (player.getPoints() == dealerPoints) {
                 player.setChips(player.getChips() + player.getBet());
-                broadcastMessage(ANSI_CYAN + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET + "\n");
             } else {
-                broadcastMessage(ANSI_CYAN + player.getName() + " lost to dealer! He lost " + player.getBet() + " chips!" + ANSI_RESET);
+                broadcastMessage(ANSI_CYAN + player.getName() + " lost to dealer! He lost " + player.getBet() + " chips!" + ANSI_RESET + "\n");
             }
         }
     }
@@ -237,7 +240,7 @@ public class Game {
             for (Player each : players) {
                 player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " hand is:" + ANSI_RESET);
                 for (Card card : each.getPlayerHand()) {
-                    player.getPrintStream().println(ANSI_CYAN + card.getCardName() + " of " + card.getSuit() + ANSI_RESET);
+                    player.getPrintStream().println(card.getCardName()+ ANSI_CYAN  +  " of " + card.getSuit() + ANSI_RESET);
                 }
                 player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " total points: " + each.getPoints() + ANSI_RESET);
             }
@@ -253,22 +256,22 @@ public class Game {
     public void broadcastTotalChips() {
         for (Player player : players) {
             for (Player each : players) {
-                player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " total chips is: " + each.getChips() + ANSI_RESET + "\n");
+                player.getPrintStream().println(ANSI_CYAN + each.getName() + " total chips is: " + each.getChips() + ANSI_RESET + "\n");
             }
         }
     }
 
     public void broadcastTotalPoints(Player player) {
         for (Player play : players) {
-            player.getPrintStream().println(ANSI_CYAN + "\n" + play.getName() + " total points is: " + play.getPoints() + ANSI_RESET + "\n");
+            player.getPrintStream().println(ANSI_CYAN + play.getName() + " total points is: " + play.getPoints() + ANSI_RESET + "\n");
         }
     }
 
     public void showDealerFirstCard() {
 
         for (Player player : players) {
-            player.getPrintStream().println(ANSI_YELLOW + "\nThe dealer's first card is:\n"
-                    + dealerHand.get(0).getCardName()
+            player.getPrintStream().println(ANSI_YELLOW + "\nThe dealer's first card is:\n" + ANSI_RESET
+                    + dealerHand.get(0).getCardName() + ANSI_YELLOW
                     + " of " + dealerHand.get(0).getSuit() + ANSI_RESET);
         }
     }
@@ -290,6 +293,13 @@ public class Game {
     }
 
     public void dealerLogic() {
+
+        if(dealerPoints == 21){
+            dealerBlackJack = true;
+            broadcastMessage("Dealer got BLACKJACK!");
+            comparePoints();
+            return;
+        }
 
         while (!dealerBust && dealerPoints < 17) {
 
