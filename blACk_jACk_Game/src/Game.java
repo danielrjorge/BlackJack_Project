@@ -18,6 +18,7 @@ public class Game {
         this.dealerHand = new LinkedList<>();
         this.players = players;
 
+
     }
 
     public void startGame() {
