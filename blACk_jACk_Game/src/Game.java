@@ -349,7 +349,9 @@ public class Game {
         player.setBet(player.getBet() * 2);
         player.setChips(player.getChips() - player.getBet());
         player.setHasStood();
-
+        Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
+        player.getPrintStream().println("You got the card "
+                + thisCard.getCardName() + " of " + thisCard.getSuit());
     }
 
     public void isBust(Player player) {
