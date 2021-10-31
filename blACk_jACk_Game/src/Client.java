@@ -44,6 +44,7 @@ public class Client implements Runnable {
             }
         } else {
             playAlone = 0;
+            getPrintStream().println("Waiting for other players..." + "\n");
         }
     }
 
