@@ -40,13 +40,16 @@ public class Server {
 
     public void listen() throws InterruptedException {
         while (allClients.size() < maxClients) {
-            game = new Game(list);
             list = new LinkedList<>();
-            while (list.size() <= 1) {
+            game = new Game(list);
+            while (list.size() < 2) {
                 // block waiting for a client to connect
                 System.out.println("Waiting for a client connection");
                 try {
                     clientSocket = serverSocket.accept();
+                    Player clientConnection = new Player(clientSocket, this);
+                    allClients.add(clientConnection);
+                    multipleClients.submit(clientConnection);
                     printStream = new PrintStream(clientSocket.getOutputStream());
                     prompt = new Prompt(clientSocket.getInputStream(), printStream);
                     System.out.println("New client connection, socket: " + clientSocket.getPort());
@@ -55,15 +58,8 @@ public class Server {
                     e.printStackTrace();
                 }
 
-                Player clientConnection = new Player(clientSocket, this);
-
-                allClients.add(clientConnection);
-                multipleClients.submit(clientConnection);
-
             }
-            game.setPlayers(list);
-            GameLobby gameLobby = new GameLobby(game);
-            multipleGames.submit(gameLobby);
+
         }
 
         try {
@@ -101,5 +97,12 @@ public class Server {
 
     public LinkedList<Player> getAllClients() {
         return allClients;
+    }
+
+    public void startGame(){
+        System.out.println(list.size());
+        game.setPlayers(list);
+        GameLobby gameLobby = new GameLobby(game);
+        multipleGames.submit(gameLobby);
     }
 }

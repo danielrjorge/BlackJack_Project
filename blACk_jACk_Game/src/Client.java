@@ -45,8 +45,13 @@ public class Client implements Runnable {
         } else {
             playAlone = 0;
             server.getList().add((Player) this);
+            server.getGame().setPlayers(server.getList());
             getPrintStream().println("Waiting for other players..." + "\n");
+            if (server.getList().size() == 2){
+                server.startGame();
+            }
         }
+
     }
 
     public String getName() {
