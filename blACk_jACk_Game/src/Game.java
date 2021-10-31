@@ -225,7 +225,7 @@ public class Game {
             for (Player each : players) {
                 player.getPrintStream().println("\n" + each.getName() + " hand is:");
                 for (Card card : each.getPlayerHand()) {
-                    player.getPrintStream().println(card.getCardName() + " of " + card.getSuit());
+                    player.getPrintStream().println(card.getCardName() + " of " + card.getSuit() + " -> " + card.getCardPoints());
                 }
                 player.getPrintStream().println("\n" + each.getName() + " total points: " + each.getPoints());
             }
@@ -251,7 +251,7 @@ public class Game {
         for (Player player : players) {
             player.getPrintStream().println("\nThe dealer's first card is:\n"
                     + dealerHand.get(0).getCardName()
-                    + " of " + dealerHand.get(0).getSuit());
+                    + " of " + dealerHand.get(0).getSuit() + " -> " + dealerHand.get(0).getCardPoints());
         }
     }
 
@@ -260,7 +260,7 @@ public class Game {
         for (Player player : players) {
             player.getPrintStream().println("\nThe dealer's second card is:\n"
                     + dealerHand.get(1).getCardName()
-                    + " of " + dealerHand.get(1).getSuit()
+                    + " of " + dealerHand.get(1).getSuit()+ " -> " + dealerHand.get(1).getCardPoints()
                     + "\n Dealer's point total: " + dealerPoints);
         }
 
@@ -278,7 +278,7 @@ public class Game {
             addCardAndRemoveFromDeckDealer();
 
             Card latestDealerCard = dealerHand.get(dealerHand.size() - 1);
-            broadcastMessage("Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit());
+            broadcastMessage("Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit() + " -> " + latestDealerCard.getCardPoints());
 
             try {
                 Thread.sleep(2000);
@@ -301,7 +301,7 @@ public class Game {
         addCardAndRemoveFromDeck(player);
         Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
         player.getPrintStream().println("You got the card "
-                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints());
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + " -> " + thisCard.getCardPoints() + "\nYour total points are " + player.getPoints());
 
     }
 
@@ -322,14 +322,8 @@ public class Game {
 
         Card thisCard = player.getPlayerHand().get(player.getPlayerHand().size() - 1);
         player.getPrintStream().println("You got the card "
-                + thisCard.getCardName() + " of " + thisCard.getSuit() + "\nYour total points are " + player.getPoints());
+                + thisCard.getCardName() + " of " + thisCard.getSuit() + " -> " + thisCard.getCardPoints() + "\nYour total points are " + player.getPoints());
 
-    }
-
-    public void isBust(Player player) {
-        if (player.getPoints() > MAXPOINTS) {
-            player.setBust();
-        }
     }
 
     public void addCardAndRemoveFromDeck(Player player) {
