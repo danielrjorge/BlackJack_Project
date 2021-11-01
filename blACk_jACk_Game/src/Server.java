@@ -40,7 +40,7 @@ public class Server {
         while (allClients.size() < maxClients) {
             list = new LinkedList<>();
             game = new Game(list);
-            while (list.size() < 2) {
+            while (list.size() < 4) {
                 // block waiting for a client to connect
                 System.out.println("Waiting for a client connection");
                 try {
@@ -102,5 +102,7 @@ public class Server {
         game.setPlayers(list);
         GameLobby gameLobby = new GameLobby(game);
         multipleGames.submit(gameLobby);
+        list = new LinkedList<>();
+        game = new Game(list);
     }
 }
