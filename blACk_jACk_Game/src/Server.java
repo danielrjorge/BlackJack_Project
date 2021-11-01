@@ -40,7 +40,7 @@ public class Server {
         while (allClients.size() < maxClients) {
             list = new LinkedList<>();
             game = new Game(list);
-            while (list.size() < 4) {
+            while (list.size() < 4 && allClients.size() < maxClients) {
                 // block waiting for a client to connect
                 System.out.println("Waiting for a client connection");
                 try {
