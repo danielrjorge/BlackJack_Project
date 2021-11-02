@@ -30,6 +30,10 @@ If the dealer reaches a valid hand, the cards are totalled and each player’s h
 
 A perfect hand combines an ace with a 10, Jack, Queen or King and is known as a ‘Blackjack’.
 
+Technology used:
+Java 8 including multi-threading, server/client logic, TCP/IP, I/O Streams.
+IDE: IntelliJ IDEA
+
 Contributors:
 Daniel Jorge - @danielrjorge
 João Pacheco - @pachecojoao
