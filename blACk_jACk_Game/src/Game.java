@@ -212,8 +212,10 @@ public class Game {
             player.resetPoints();
             player.resetPlayerHand();
             player.resetStood();
+            player.setBlackJack(false);
         }
         dealerBust = false;
+        dealerBlackJack = false;
         dealerPoints = 0;
         dealerHand = new LinkedList<>();
         gameDeck = fullDeck;
