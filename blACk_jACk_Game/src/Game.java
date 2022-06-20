@@ -11,20 +11,25 @@ public class Game {
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
     private boolean dealerBust, dealerBlackJack;
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_RESET = "\u001B[0m";
-    private boolean playing;
+    public static String ANSI_RED = "";
+    public static String ANSI_GREEN = "";
+    public static String ANSI_YELLOW = "";
+    public static String ANSI_CYAN = "";
+    public static String ANSI_RESET = "";
+
+    public static String SPADES_ICON = "";
+    public static String CLUBS_ICON = "";
+    public static String HEARTS_ICON = "";
+    public static String DIAMONDS_ICON = "";
+
+    private boolean isWindows;
 
     public Game(List<Player> players) {
-
         this.fullDeck = getAllCards();
         this.gameDeck = getAllCards();
         this.dealerHand = new LinkedList<>();
         this.players = players;
-
+        this.isWindows = isWindows();
     }
 
     public void startGame() throws InterruptedException {
@@ -34,21 +39,15 @@ public class Game {
             }
 
         }
-
         while(players.size() > 0) {
             startRound();
-            playing = false;
         }
-
     }
 
     public void distributeHands() {
 
-        for (int i = 0; i < 2; i++) {
-
-            addCardAndRemoveFromDeckDealer();
-
-        }
+        addCardAndRemoveFromDeckDealer();
+        addCardAndRemoveFromDeckDealer();
 
         //check if double ace
         for(Card card: dealerHand){
@@ -59,24 +58,18 @@ public class Game {
 
         for (Player player : players) {
 
-            for (int i = 0; i < 2; i++) {
-                addCardAndRemoveFromDeck(player);
-            }
+            addCardAndRemoveFromDeck(player);
+            addCardAndRemoveFromDeck(player);
 
             for(Card card: player.getPlayerHand()){
                 if(card.getCardName() == CardNames.ACE && dealerPoints > 21){
                     card.setCardPoints(1);
                 }
             }
-
         }
-
-
-
     }
 
     public void startRound() throws InterruptedException {
-        playing = true;
         LinkedList<Thread> threadList = new LinkedList<>();
 
         makeBets(threadList);
@@ -121,7 +114,7 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 0:
-                    suit =ANSI_GREEN + "SPADES ♠ " + ANSI_RESET;
+                    suit = ANSI_GREEN + "SPADES " + SPADES_ICON + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -138,7 +131,7 @@ public class Game {
                     break;
 
                 case 1:
-                    suit =ANSI_GREEN + "CLUBS ♣ " + ANSI_RESET;
+                    suit = ANSI_GREEN + "CLUBS " + CLUBS_ICON + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -155,7 +148,7 @@ public class Game {
                     break;
 
                 case 2:
-                    suit = ANSI_RED + "HEARTS ♥ " + ANSI_RESET;
+                    suit = ANSI_RED + "HEARTS " + HEARTS_ICON + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -172,7 +165,7 @@ public class Game {
                     break;
 
                 case 3:
-                    suit =ANSI_RED + "DIAMONDS ♦ " + ANSI_RESET;
+                    suit =ANSI_RED + "DIAMONDS " + DIAMONDS_ICON + ANSI_RESET;
                     fullDeck.put(counter++, new Card(CardNames.ACE, suit));
                     fullDeck.put(counter++, new Card(CardNames.KING, suit));
                     fullDeck.put(counter++, new Card(CardNames.QUEEN, suit));
@@ -283,7 +276,6 @@ public class Game {
     }
 
     public void showDealerFirstCard() {
-
         for (Player player : players) {
             player.getPrintStream().println(ANSI_YELLOW + "\nThe dealer's first card is:\n" + ANSI_RESET
                     + dealerHand.get(0).getCardName() + ANSI_YELLOW
@@ -435,6 +427,31 @@ public class Game {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public boolean isWindows() {
+        if(System.getProperty("os.name").startsWith("Windows")){
+            return true;
+        }
+        else{
+            setColorsAndIcons();
+            return false;
+        }
+    }
+
+    public void setColorsAndIcons(){
+        //sets colors and icons to the terminal if client is not on Windows OS
+        if(!isWindows()){
+            ANSI_RED = "\u001B[31m";
+            ANSI_GREEN = "\u001B[32m";
+            ANSI_YELLOW = "\u001B[33m";
+            ANSI_CYAN = "\u001B[36m";
+            ANSI_RESET = "\u001B[0m";
+            SPADES_ICON = "♠ ";
+            CLUBS_ICON = "♣ ";
+            HEARTS_ICON = "♥ ";
+            DIAMONDS_ICON = "♦ ";
+        }
     }
 
 

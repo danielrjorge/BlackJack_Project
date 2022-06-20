@@ -9,6 +9,7 @@ OPTIMIZED FOR UNIX-like based OS
 How to play?
 Run the blACk_jACk_Game.jar (on terminal go to directory and run "java -jar blACk_jACk_Game.jar")
 Connect to server with Net Cat (nc <IP> <port>) -> port 42069;
+On Windows systems, you will need to install Net Cat manually (Nmap installation recommended).
 
 RULES OF THE GAME:
 
