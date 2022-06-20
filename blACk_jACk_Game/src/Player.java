@@ -24,6 +24,7 @@ public class Player extends Client {
 
     public void addToHand(Card card) {
         playerHand.add(card);
+        sumPoints(card.getCardPoints());
     }
 
     public LinkedList<Card> getPlayerHand() {

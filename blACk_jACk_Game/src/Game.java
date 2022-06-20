@@ -46,6 +46,7 @@ public class Game {
         for(Card card: dealerHand){
             if(card.getCardName() == CardNames.ACE && dealerPoints > 21){
                 card.setCardPoints(1);
+                dealerPoints = 12;
             }
         }
 
@@ -57,6 +58,7 @@ public class Game {
             for(Card card: player.getPlayerHand()){
                 if(card.getCardName() == CardNames.ACE && dealerPoints > 21){
                     card.setCardPoints(1);
+                    player.setPoints(12);
                 }
             }
         }
@@ -185,6 +187,7 @@ public class Game {
 
     public void addToDealerHand(Card card) {
         dealerHand.add(card);
+        dealerPoints += card.getCardPoints();
     }
 
     public void setPlayers(LinkedList<Player> players) {
@@ -218,9 +221,6 @@ public class Game {
             } else if (player.hasBlackJack() && !dealerBlackJack){
                 player.setChips(player.getChips() + player.getBet() * 3);
                 broadcastMessage(ANSI_CYAN + player.getName() + " won the hand with a BLACKJACK! He got " + player.getBet() * 3 + " chips!" + ANSI_RESET + "\n");
-            } else if(player.hasBlackJack() && dealerBlackJack){
-                player.setChips(player.getChips() + player.getBet());
-                broadcastMessage(ANSI_CYAN + player.getName() + " tied with dealer! He got his chips back!" + ANSI_RESET + "\n");
             }
             else if (player.getPoints() > dealerPoints || dealerBust) {
                 player.setChips(player.getChips() + player.getBet() * 2);
@@ -291,7 +291,7 @@ public class Game {
             player.getPrintStream().println( ANSI_YELLOW +"\nThe dealer's second card is:\n"
                     + dealerHand.get(1).getCardName()
                     + " of " + dealerHand.get(1).getSuit()
-                    + ANSI_YELLOW + "\nDealer's point total:" + tempDealerPoints + ANSI_RESET);
+                    + ANSI_YELLOW + "\nDealer's point total: " + tempDealerPoints + ANSI_RESET);
         }
 
         try {
@@ -368,11 +368,8 @@ public class Game {
 
         Integer[] remaining = new Integer[gameDeck.size()];
         gameDeck.keySet().toArray(remaining);
-
         int remainingCards = remaining[Randomizer.getNumber(remaining.length) - 1];
-
         Card currentCard = gameDeck.get(remainingCards);
-        player.sumPoints(currentCard.getCardPoints());
         gameDeck.remove(remainingCards);
         player.addToHand(currentCard);
     }
@@ -387,7 +384,7 @@ public class Game {
         Card currentCard = gameDeck.get(remainingCards);
         gameDeck.remove(remainingCards);
         addToDealerHand(currentCard);
-        dealerPoints += currentCard.getCardPoints();
+
     }
 
     private void makeBets(LinkedList<Thread> threadList) {
