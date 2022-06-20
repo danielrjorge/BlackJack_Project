@@ -9,6 +9,7 @@ public class Game {
     private LinkedList<Player> players;
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
+    private final int SLEEPTIME = 2000;
     private boolean dealerBust, dealerBlackJack;
     public static String ANSI_RED = "";
     public static String ANSI_GREEN = "";
@@ -21,23 +22,16 @@ public class Game {
     public static String HEARTS_ICON = "";
     public static String DIAMONDS_ICON = "";
 
-    private boolean isWindows;
-
     public Game(LinkedList<Player> players) {
         this.fullDeck = getAllCards();
         this.gameDeck = getAllCards();
         this.dealerHand = new LinkedList<>();
         this.players = players;
-        this.isWindows = isWindows();
+        setTerminalColors();
     }
 
     public void startGame() throws InterruptedException {
-        for (Player player : players) {
-            while (player.getName() == null || player.isPlayAlone() == -1 ) {
 
-            }
-
-        }
         while(players.size() > 0) {
             startRound();
         }
@@ -78,28 +72,26 @@ public class Game {
         //need to broadcast hands
         showDealerFirstCard();
 
-        Thread.sleep(2000);
+        Thread.sleep(SLEEPTIME);
         showHands();
 
         playHands(threadList);
 
-        Thread.sleep(2000);
+        Thread.sleep(SLEEPTIME);
 
         showDealerSecondCard();
 
-        Thread.sleep(2000);
+        Thread.sleep(SLEEPTIME);
 
         dealerLogic();
 
-        Thread.sleep(2000);
+        Thread.sleep(SLEEPTIME);
 
         broadcastTotalChips();
 
-        Thread.sleep(2000);
+        Thread.sleep(SLEEPTIME);
 
         prepareNextRound();
-
-        Thread.sleep(2000);
 
     }
 
@@ -333,7 +325,7 @@ public class Game {
             broadcastMessage(ANSI_YELLOW + "Dealer drew card: " + latestDealerCard.getCardName() + " of " + latestDealerCard.getSuit() + ANSI_RESET);
 
             try {
-                Thread.sleep(2000);
+                Thread.sleep(SLEEPTIME);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -439,29 +431,23 @@ public class Game {
         return players;
     }
 
-    public boolean isWindows() {
-        if(System.getProperty("os.name").startsWith("Windows")){
-            return true;
-        }
-        else{
+    public void setTerminalColors() {
+        //sets colors and icons to the terminal if client is not on Windows OS
+        if(!System.getProperty("os.name").startsWith("Windows")){
             setColorsAndIcons();
-            return false;
         }
     }
 
     public void setColorsAndIcons(){
-        //sets colors and icons to the terminal if client is not on Windows OS
-        if(!isWindows()){
-            ANSI_RED = "\u001B[31m";
-            ANSI_GREEN = "\u001B[32m";
-            ANSI_YELLOW = "\u001B[33m";
-            ANSI_CYAN = "\u001B[36m";
-            ANSI_RESET = "\u001B[0m";
-            SPADES_ICON = "♠ ";
-            CLUBS_ICON = "♣ ";
-            HEARTS_ICON = "♥ ";
-            DIAMONDS_ICON = "♦ ";
-        }
+        ANSI_RED = "\u001B[31m";
+        ANSI_GREEN = "\u001B[32m";
+        ANSI_YELLOW = "\u001B[33m";
+        ANSI_CYAN = "\u001B[36m";
+        ANSI_RESET = "\u001B[0m";
+        SPADES_ICON = "♠ ";
+        CLUBS_ICON = "♣ ";
+        HEARTS_ICON = "♥ ";
+        DIAMONDS_ICON = "♦ ";
     }
 
 
