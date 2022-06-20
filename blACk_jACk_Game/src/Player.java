@@ -11,14 +11,6 @@ public class Player extends Client {
     private boolean hasStood;
     private boolean hasBlackJack;
 
-    //for tests
-    public Player(){
-        super(new Socket(), new Server());
-        playerHand = new LinkedList<>();
-        this.chips = 500;
-    }
-
-    //for real
     public Player(Socket socket, Server server) {
         super(socket, server);
         playerHand = new LinkedList<>();
