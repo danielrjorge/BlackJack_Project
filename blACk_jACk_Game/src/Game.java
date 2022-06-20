@@ -1,13 +1,12 @@
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Game {
 
     private LinkedList<Card> dealerHand;
 
     private LinkedHashMap<Integer, Card> fullDeck, gameDeck;
-    private List<Player> players;
+    private LinkedList<Player> players;
     public final int MAXPOINTS = 21;
     private int dealerPoints = 0;
     private boolean dealerBust, dealerBlackJack;
@@ -24,7 +23,7 @@ public class Game {
 
     private boolean isWindows;
 
-    public Game(List<Player> players) {
+    public Game(LinkedList<Player> players) {
         this.fullDeck = getAllCards();
         this.gameDeck = getAllCards();
         this.dealerHand = new LinkedList<>();
@@ -246,11 +245,17 @@ public class Game {
     public void showHands() {
         for (Player player : players) {
             for (Player each : players) {
+
+                //covered for double ace scenario at first hand
+                int tempPoints = each.getPoints();
+                if(each.getPoints() == 22){
+                    tempPoints = 12;
+                }
                 player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " hand is:" + ANSI_RESET);
                 for (Card card : each.getPlayerHand()) {
                     player.getPrintStream().println(card.getCardName()+ ANSI_CYAN  +  " of " + card.getSuit() + ANSI_RESET);
                 }
-                player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " total points: " + each.getPoints() + ANSI_RESET);
+                player.getPrintStream().println(ANSI_CYAN + "\n" + each.getName() + " total points: " + tempPoints + ANSI_RESET);
             }
         }
     }
@@ -285,11 +290,16 @@ public class Game {
 
     public void showDealerSecondCard() {
 
+        //covered double ace scenario
+        int tempDealerPoints = dealerPoints;
+        if(dealerPoints == 22){
+            tempDealerPoints = 12;
+        }
         for (Player player : players) {
             player.getPrintStream().println( ANSI_YELLOW +"\nThe dealer's second card is:\n"
                     + dealerHand.get(1).getCardName()
                     + " of " + dealerHand.get(1).getSuit()
-                    + ANSI_YELLOW + "Dealer's point total:" + dealerPoints + ANSI_RESET);
+                    + ANSI_YELLOW + "\nDealer's point total:" + tempDealerPoints + ANSI_RESET);
         }
 
         try {
@@ -425,7 +435,7 @@ public class Game {
         }
     }
 
-    public List<Player> getPlayers() {
+    public LinkedList<Player> getPlayers() {
         return players;
     }
 
